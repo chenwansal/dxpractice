@@ -1,0 +1,18 @@
+==== 控制层 ====
+WinMain.cpp
+
+	==== 应用层 ====
+	EngineEntry.h
+
+		==== 领域层 ====
+		WindowContainer.h
+
+			==== 基础设施层 ====
+			RenderWindow.h
+			KeyboardDevice.h
+
+
+
+==== 插件层 ====
+ErrorLogger.h
+	StringConverter.h

@@ -1,42 +1,78 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="源文件">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
-    </Filter>
-    <Filter Include="头文件">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
-    </Filter>
-    <Filter Include="资源文件">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
-    </Filter>
-  </ItemGroup>
-  <ItemGroup>
     <ClCompile Include="WinMain.cpp">
-      <Filter>资源文件</Filter>
+      <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="StringConverter.cpp">
-      <Filter>资源文件</Filter>
+    <ClCompile Include="Engine\EngineEntry.cpp">
+      <Filter>Source\Engine</Filter>
     </ClCompile>
-    <ClCompile Include="ErrorLogger.cpp">
-      <Filter>资源文件</Filter>
+    <ClCompile Include="Engine\Logger\ErrorLogger.cpp">
+      <Filter>Source\Engine\Logger</Filter>
     </ClCompile>
-    <ClCompile Include="RenderWindow.cpp">
-      <Filter>资源文件</Filter>
+    <ClCompile Include="Engine\Base\StringConverter.cpp">
+      <Filter>Source\Engine\Base</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\Window\RenderWindow.cpp">
+      <Filter>Source\Engine\Window</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Window\WindowContainer.cpp">
+      <Filter>Source\Engine\Window</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Keyboard\KeyboardDevice.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="StringConverter.h">
-      <Filter>头文件</Filter>
+    <ClInclude Include="Engine\EngineEntry.h">
+      <Filter>Header\Engine</Filter>
     </ClInclude>
-    <ClInclude Include="ErrorLogger.h">
-      <Filter>头文件</Filter>
+    <ClInclude Include="Engine\Logger\ErrorLogger.h">
+      <Filter>Header\Engine\Logger</Filter>
     </ClInclude>
-    <ClInclude Include="RenderWindow.h">
-      <Filter>头文件</Filter>
+    <ClInclude Include="Engine\Base\StringConverter.h">
+      <Filter>Header\Engine\Base</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\Window\RenderWindow.h">
+      <Filter>Header\Engine\Window</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Window\WindowContainer.h">
+      <Filter>Header\Engine\Window</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Keyboard\KeyboardDevice.h" />
+    <ClInclude Include="Engine\Window\IWindowContainer.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Header">
+      <UniqueIdentifier>{1e4afcd0-510d-4f1d-9cce-52a7ced0ecbc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source">
+      <UniqueIdentifier>{ed59065c-56fb-4efc-9297-1f52dcca4f5f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header\Engine">
+      <UniqueIdentifier>{3009bad0-8dc1-43a3-85be-db911ce355c7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Engine">
+      <UniqueIdentifier>{b48fde03-8484-4cca-bff5-33086b595e43}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header\Engine\Logger">
+      <UniqueIdentifier>{576c13e2-fe69-497b-904c-0214b6c8076b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header\Engine\Base">
+      <UniqueIdentifier>{04cd1176-cd72-4158-9a87-68a8285ba237}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header\Engine\Window">
+      <UniqueIdentifier>{55c70149-93a1-4286-9d1f-ebfd4d4deeab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Engine\Logger">
+      <UniqueIdentifier>{8f6d5c0b-f569-4a9b-b833-2988c1a6ee77}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Engine\Base">
+      <UniqueIdentifier>{835686a8-644c-422b-8b55-f465ef465077}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Engine\Window">
+      <UniqueIdentifier>{d98da19b-aea3-41bb-8936-142df5e6d18a}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="依赖关系.txt" />
   </ItemGroup>
 </Project>

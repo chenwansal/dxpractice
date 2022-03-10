@@ -1,5 +1,5 @@
 #pragma once
-#include "StringConverter.h"
+#include "../Base/StringConverter.h"
 #include <Windows.h>
 
 class ErrorLogger {
