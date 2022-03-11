@@ -2,14 +2,43 @@
 
 bool WindowContainer::Initialize(HINSTANCE hInstance, string window_title,
                                  string window_class, int width, int height) {
-    this->keyboard = KeyboardDevice();
-    this->mouse = MouseDevice();
-    return this->renderWindow.Initialize(this, hInstance, window_title,
-                                         window_class, width, height);
+    // KEYBOARD
+    keyboard = KeyboardDevice();
+    PLogger::ConsoleLog("keyboard init\r\n");
+
+    // MOUSE
+    mouse = MouseDevice();
+    PLogger::ConsoleLog("mouse init\r\n");
+
+    // WINDOW
+    if (!renderWindow.Initialize(this, hInstance, window_title, window_class, width, height)) {
+        return false;
+    }
+    PLogger::ConsoleLog("window init\r\n");
+
+    // GRAPHIC
+    if (!gfx.Initialize(renderWindow.GetHWND(), width, height)) {
+        return false;
+    }
+    PLogger::ConsoleLog("graphic init\r\n");
+
+    return true;
 }
 
 bool WindowContainer::Process() {
     return this->renderWindow.ProcessMessages();
+}
+
+void WindowContainer::Update() {
+    while (!this->keyboard.IsKeyBufferEmpty()) {
+        KeyboardEvent kbe = this->keyboard.ReadKey();
+        // PLogger::ConsoleLog("" + kbe.GetKeyCode());
+    }
+
+    while (!this->mouse.IsEventBufferEmpty()) {
+        MouseEvent me = this->mouse.ReadEvent();
+        // PLogger::ConsoleLog("dd");
+    }
 }
 
 LRESULT CALLBACK WindowContainer::OnWindowProc(HWND hwnd, UINT msg,

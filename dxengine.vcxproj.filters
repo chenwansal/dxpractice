@@ -4,7 +4,7 @@
     <ClCompile Include="WinMain.cpp">
       <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\EngineEntry.cpp">
+    <ClCompile Include="Engine\EngineCore.cpp">
       <Filter>Source\Engine</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Logger\PLogger.cpp">
@@ -31,9 +31,13 @@
     <ClCompile Include="Engine\Mouse\MouseEvent.cpp">
       <Filter>Source\Engine\Mouse</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\Graphics\Graphics.cpp">
+      <Filter>Source\Engine\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Graphics\GraphicAdapterReader.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Engine\EngineEntry.h">
+    <ClInclude Include="Engine\EngineCore.h">
       <Filter>Header\Engine</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Logger\PLogger.h">
@@ -63,6 +67,10 @@
     <ClInclude Include="Engine\Mouse\MouseEvent.h">
       <Filter>Header\Engine\Mouse</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\Graphics\Graphics.h">
+      <Filter>Header\Engine\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Graphics\GraphicAdapterReader.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Header">
@@ -106,6 +114,12 @@
     </Filter>
     <Filter Include="Source\Engine\Mouse">
       <UniqueIdentifier>{6725ef58-5378-47b1-8012-1cce5e341838}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Engine\Graphics">
+      <UniqueIdentifier>{efe99d75-776f-4e37-96f9-42f8a98aea22}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header\Engine\Graphics">
+      <UniqueIdentifier>{68a7ea15-37ae-41bd-9305-9c49268c1f83}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

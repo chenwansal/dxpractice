@@ -10,6 +10,10 @@ RenderWindow::~RenderWindow() {
     }
 }
 
+HWND RenderWindow::GetHWND() {
+    return this->handle;
+}
+
 bool RenderWindow::Initialize(IWindowContainer *ptrWindowContainer,
                               HINSTANCE hInstance, string window_title,
                               string window_class, int width, int height) {

@@ -4,10 +4,6 @@
 
 class RenderWindow {
   public:
-    // MODEL
-    HINSTANCE hInstance = NULL;
-    HWND handle = NULL;
-
     // 构造
     RenderWindow();
     ~RenderWindow();
@@ -16,9 +12,12 @@ class RenderWindow {
                     string window_title, string window_class, int width,
                     int height);
     bool ProcessMessages();
+    HWND GetHWND();
 
   private:
     // MODEL
+    HINSTANCE hInstance = NULL;
+    HWND handle = NULL;
     string window_title = "";
     wstring window_title_wide = L"";
     string window_class = "";
