@@ -6,11 +6,12 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
                       _In_opt_ HINSTANCE hPrevInstance, _In_ LPWSTR lpCmdLine,
                       _In_ int nCmdShow) {
 
-    EngineCore entry;
-    entry.Initialize(hInstance, "myTitle", "myClass", 800, 600);
+    EngineCore engine;
+    engine.Initialize(hInstance, "myTitle", "myClass", 800, 600);
 
-    while (entry.Process()) {
-        entry.Update();
+    while (engine.Process()) {
+        engine.Update();
+        engine.RenderFrame();
     }
 
     return 0;

@@ -6,6 +6,7 @@
 class Graphics {
   public:
     bool Initialize(HWND hwnd, int width, int height);
+    void RenderFrame();
 
   private:
     ComPtr<ID3D11Device> ptrDevice;

@@ -41,6 +41,10 @@ void WindowContainer::Update() {
     }
 }
 
+void WindowContainer::RenderFrame() {
+    this->gfx.RenderFrame();
+}
+
 LRESULT CALLBACK WindowContainer::OnWindowProc(HWND hwnd, UINT msg,
                                                WPARAM wParam, LPARAM lParam) {
     switch (msg) {

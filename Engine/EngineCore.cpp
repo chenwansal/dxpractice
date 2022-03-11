@@ -27,3 +27,7 @@ bool EngineCore::Process() {
 void EngineCore::Update() {
     this->mainWindow.Update();
 }
+
+void EngineCore::RenderFrame() {
+    this->mainWindow.RenderFrame();
+}

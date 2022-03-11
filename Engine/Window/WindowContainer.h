@@ -12,6 +12,7 @@ class WindowContainer : IWindowContainer {
                     int height);
     bool Process();
     void Update();
+    void RenderFrame();
     LRESULT CALLBACK OnWindowProc(HWND hwnd, UINT msg, WPARAM wParam,
                                   LPARAM lParam);
 

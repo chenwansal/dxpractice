@@ -13,6 +13,7 @@ class EngineCore {
                     int width, int height);
     bool Process();
     void Update();
+    void RenderFrame();
 
   private:
     WindowContainer mainWindow;
