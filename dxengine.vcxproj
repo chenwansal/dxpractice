@@ -149,7 +149,10 @@
   <ItemGroup>
     <ClCompile Include="Engine\EngineEntry.cpp" />
     <ClCompile Include="Engine\Keyboard\KeyboardDevice.cpp" />
-    <ClCompile Include="Engine\Logger\ErrorLogger.cpp" />
+    <ClCompile Include="Engine\Logger\PLogger.cpp" />
+    <ClCompile Include="Engine\Keyboard\KeyboardEvent.cpp" />
+    <ClCompile Include="Engine\Mouse\MouseDevice.cpp" />
+    <ClCompile Include="Engine\Mouse\MouseEvent.cpp" />
     <ClCompile Include="Engine\Window\RenderWindow.cpp" />
     <ClCompile Include="Engine\Base\StringConverter.cpp" />
     <ClCompile Include="Engine\Window\WindowContainer.cpp" />
@@ -158,10 +161,13 @@
   <ItemGroup>
     <ClInclude Include="Engine\EngineEntry.h" />
     <ClInclude Include="Engine\Keyboard\KeyboardDevice.h" />
+    <ClInclude Include="Engine\Mouse\MouseDevice.h" />
+    <ClInclude Include="Engine\Mouse\MouseEvent.h" />
     <ClInclude Include="Engine\Window\IWindowContainer.h" />
+    <ClInclude Include="Engine\Keyboard\KeyboardEvent.h" />
     <ClInclude Include="Engine\Window\RenderWindow.h" />
     <ClInclude Include="Engine\Base\StringConverter.h" />
-    <ClInclude Include="Engine\Logger\ErrorLogger.h" />
+    <ClInclude Include="Engine\Logger\PLogger.h" />
     <ClInclude Include="Engine\Window\WindowContainer.h" />
   </ItemGroup>
   <ItemGroup>

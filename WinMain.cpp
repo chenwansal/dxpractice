@@ -10,6 +10,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     entry.Initialize(hInstance, "myTitle", "myClass", 800, 600);
 
     while (entry.Process()) {
+        entry.Update();
     }
 
     return 0;

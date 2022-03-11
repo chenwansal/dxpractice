@@ -1,6 +1,7 @@
 #include "./RenderWindow.h"
 
-RenderWindow::RenderWindow() {}
+RenderWindow::RenderWindow() {
+}
 
 RenderWindow::~RenderWindow() {
     if (this->handle != NULL) {
@@ -28,8 +29,8 @@ bool RenderWindow::Initialize(IWindowContainer *ptrWindowContainer,
         this->height, NULL, NULL, this->hInstance, ptrWindowContainer);
 
     if (this->handle == NULL) {
-        ErrorLogger::Log(GetLastError(),
-                         "CreateWindowEx Failed: " + this->window_title);
+        PLogger::PopupErrorWithResult(
+            GetLastError(), "CreateWindowEx Failed: " + this->window_title);
         return false;
     }
 
@@ -78,22 +79,45 @@ void RenderWindow::RegisterWindowClass() {
     RegisterClassEx(&wc);
 }
 
+LRESULT CALLBACK RenderWindow::HandleMsgRedirect(HWND hwnd, UINT msg,
+                                                 WPARAM wParam, LPARAM lParam) {
+    switch (msg) {
+    case WM_CLOSE: {
+        DestroyWindow(hwnd);
+        return 0;
+    }
+    default:
+        IWindowContainer *ptrWindow = reinterpret_cast<IWindowContainer *>(
+            GetWindowLongPtr(hwnd, GWLP_USERDATA));
+        if (ptrWindow == nullptr) {
+            PLogger::PopupError("null ptr window");
+            return DefWindowProc(hwnd, msg, wParam, lParam);
+        }
+        return ptrWindow->OnWindowProc(hwnd, msg, wParam, lParam);
+    }
+}
+
 LRESULT CALLBACK RenderWindow::OnWindowProc(HWND hwnd, UINT msg, WPARAM wParam,
                                             LPARAM lParam) {
     switch (msg) {
+    // 窗口创建回调
     case WM_NCCREATE: {
         const CREATESTRUCTW *const ptrCreate =
             reinterpret_cast<CREATESTRUCTW *>(lParam);
         IWindowContainer *ptrWindow =
             reinterpret_cast<IWindowContainer *>(ptrCreate->lpCreateParams);
         if (ptrWindow == nullptr) {
-            ErrorLogger::Log("null ptr window");
+            PLogger::PopupError("null ptr window");
             exit(-1);
         }
         SetWindowLongPtr(hwnd, GWLP_USERDATA,
                          reinterpret_cast<LONG_PTR>(ptrWindow));
-        return DefWindowProc(hwnd, msg, wParam, lParam);
+        SetWindowLongPtr(
+            hwnd, GWLP_WNDPROC,
+            reinterpret_cast<LONG_PTR>(RenderWindow::HandleMsgRedirect));
+        return ptrWindow->OnWindowProc(hwnd, msg, wParam, lParam);
     }
+    // 默认处理
     default: {
         return DefWindowProc(hwnd, msg, wParam, lParam);
     }

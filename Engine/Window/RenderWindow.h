@@ -1,5 +1,5 @@
 #pragma once
-#include "../Logger/ErrorLogger.h"
+#include "../Logger/PLogger.h"
 #include "IWindowContainer.h"
 
 class RenderWindow {
@@ -13,10 +13,9 @@ class RenderWindow {
     ~RenderWindow();
 
     bool Initialize(IWindowContainer *ptrWindowContainer, HINSTANCE hInstance,
-        string window_title, string window_class, int width, int height);
+                    string window_title, string window_class, int width,
+                    int height);
     bool ProcessMessages();
-    static LRESULT CALLBACK OnWindowProc(HWND hwnd, UINT msg, WPARAM wParam,
-        LPARAM lParam);
 
   private:
     // MODEL
@@ -28,4 +27,8 @@ class RenderWindow {
     int height = 0;
 
     void RegisterWindowClass();
+    static LRESULT CALLBACK OnWindowProc(HWND hwnd, UINT msg, WPARAM wParam,
+                                         LPARAM lParam);
+    static LRESULT CALLBACK HandleMsgRedirect(HWND hwnd, UINT msg, WPARAM wParam,
+                                       LPARAM lParam);
 };

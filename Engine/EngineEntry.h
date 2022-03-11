@@ -9,6 +9,7 @@ class EngineEntry {
     void Initialize(HINSTANCE hInstance, string titleName, string className,
                     int width, int height);
     bool Process();
+    void Update();
 
   private:
     WindowContainer mainWindow;

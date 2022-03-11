@@ -7,7 +7,7 @@
     <ClCompile Include="Engine\EngineEntry.cpp">
       <Filter>Source\Engine</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Logger\ErrorLogger.cpp">
+    <ClCompile Include="Engine\Logger\PLogger.cpp">
       <Filter>Source\Engine\Logger</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Base\StringConverter.cpp">
@@ -19,13 +19,24 @@
     <ClCompile Include="Engine\Window\WindowContainer.cpp">
       <Filter>Source\Engine\Window</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Keyboard\KeyboardDevice.cpp" />
+    <ClCompile Include="Engine\Keyboard\KeyboardDevice.cpp">
+      <Filter>Source\Engine\Keyboard</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Keyboard\KeyboardEvent.cpp">
+      <Filter>Source\Engine\Keyboard</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Mouse\MouseDevice.cpp">
+      <Filter>Source\Engine\Mouse</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Mouse\MouseEvent.cpp">
+      <Filter>Source\Engine\Mouse</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\EngineEntry.h">
       <Filter>Header\Engine</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Logger\ErrorLogger.h">
+    <ClInclude Include="Engine\Logger\PLogger.h">
       <Filter>Header\Engine\Logger</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Base\StringConverter.h">
@@ -37,8 +48,21 @@
     <ClInclude Include="Engine\Window\WindowContainer.h">
       <Filter>Header\Engine\Window</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Keyboard\KeyboardDevice.h" />
-    <ClInclude Include="Engine\Window\IWindowContainer.h" />
+    <ClInclude Include="Engine\Keyboard\KeyboardDevice.h">
+      <Filter>Header\Engine\Keyboard</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Window\IWindowContainer.h">
+      <Filter>Header\Engine\Window</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Keyboard\KeyboardEvent.h">
+      <Filter>Header\Engine\Keyboard</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Mouse\MouseDevice.h">
+      <Filter>Header\Engine\Mouse</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Mouse\MouseEvent.h">
+      <Filter>Header\Engine\Mouse</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Header">
@@ -70,6 +94,18 @@
     </Filter>
     <Filter Include="Source\Engine\Window">
       <UniqueIdentifier>{d98da19b-aea3-41bb-8936-142df5e6d18a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Engine\Keyboard">
+      <UniqueIdentifier>{7c61ead7-8ec8-4d02-8516-c85f2304beae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header\Engine\Keyboard">
+      <UniqueIdentifier>{2d915ab8-bd54-4d01-8797-ab27fd48aea2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header\Engine\Mouse">
+      <UniqueIdentifier>{2ef05c3c-bd07-46e1-85c9-50bfcbfd9acc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Engine\Mouse">
+      <UniqueIdentifier>{6725ef58-5378-47b1-8012-1cce5e341838}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
