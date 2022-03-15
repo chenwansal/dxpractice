@@ -11,9 +11,13 @@ void PLogger::PopupError(string message) {
 }
 
 void PLogger::PopupErrorWithResult(HRESULT hr, string message) {
+    PopupErrorWithResult(hr, StringConverter::StringToWide(message));
+}
+
+void PLogger::PopupErrorWithResult(HRESULT hr, wstring message) {
     _com_error error(hr);
     wstring error_message = L"Error: " +
-                            StringConverter::StringToWide(message) + L"\r\n" +
+                            message + L"\r\n" +
                             error.ErrorMessage();
     MessageBoxW(NULL, error_message.c_str(), L"Error", MB_ICONERROR);
 }

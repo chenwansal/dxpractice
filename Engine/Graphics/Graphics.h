@@ -1,7 +1,8 @@
 #pragma once
 #include <d3d11.h>
-#include <wrl/client.h>
 #include "GraphicAdapterReader.h"
+#include "Shaders.h"
+#include "../../Generic/PathHelper.h"
 
 class Graphics {
   public:
@@ -14,5 +15,9 @@ class Graphics {
     ComPtr<IDXGISwapChain> ptrSwapchain;
     ComPtr<ID3D11RenderTargetView> ptrRenderTargetView;
 
+    VertexShader vertexshader;
+    PixelShader pixelshader;
+
     bool InitializeDirectX(HWND hwnd, int width, int height);
+    bool InitializeShaders();
 };

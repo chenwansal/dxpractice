@@ -1,13 +1,24 @@
 #include "Graphics.h"
 
+// public instance
 bool Graphics::Initialize(HWND hwnd, int width, int height) {
     if (!InitializeDirectX(hwnd, width, height)) {
-        PLogger::ConsoleLog("false");
+        return false;
+    }
+    if (!InitializeShaders()) {
         return false;
     }
     return true;
 }
 
+void Graphics::RenderFrame() {
+    float bgcolor[] = {0.0f, 0.0f, 1.0f, 1.0f};
+    this->ptrDeviceContext->ClearRenderTargetView(
+        this->ptrRenderTargetView.Get(), bgcolor);
+    this->ptrSwapchain->Present(1, NULL);
+}
+
+// private instance
 bool Graphics::InitializeDirectX(HWND hwnd, int width, int height) {
 
     // DEVICE AND SWAPCHAIN
@@ -75,12 +86,38 @@ bool Graphics::InitializeDirectX(HWND hwnd, int width, int height) {
     this->ptrDeviceContext->OMSetRenderTargets(
         1, this->ptrRenderTargetView.GetAddressOf(), NULL);
 
+    // CREATE VIEWPORT
+    D3D11_VIEWPORT viewport;
+    ZeroMemory(&viewport, sizeof(D3D11_VIEWPORT));
+
+    viewport.TopLeftX = 0;
+    viewport.TopLeftY = 0;
+    viewport.Width = width;
+    viewport.Height = height;
+
+    // Set Viewport
+    this->ptrDeviceContext->RSSetViewports(1, &viewport);
+
     return true;
 }
 
-void Graphics::RenderFrame() {
-    float bgcolor[] = {0.0f, 0.0f, 1.0f, 1.0f};
-    this->ptrDeviceContext->ClearRenderTargetView(
-        this->ptrRenderTargetView.Get(), bgcolor);
-    this->ptrSwapchain->Present(1, NULL);
+bool Graphics::InitializeShaders() {
+
+    D3D11_INPUT_ELEMENT_DESC layoutDesc[] = {
+        {"POSITION", 0, DXGI_FORMAT::DXGI_FORMAT_R32G32_FLOAT, 0, 0,
+         D3D11_INPUT_CLASSIFICATION::D3D11_INPUT_PER_VERTEX_DATA, 0}};
+    UINT numElements = ARRAYSIZE(layoutDesc);
+
+    wstring path = PathHelper::GetEnvironmentDir();
+    if (!vertexshader.Initialize(ptrDevice, path + L"vertexshader.cso",
+                                 layoutDesc, numElements)) {
+        return false;
+    }
+
+    if (!pixelshader.Initialize(ptrDevice, path + L"pixelshader.cso",
+                                layoutDesc, numElements)) {
+        return false;
+    }
+
+    return true;
 }

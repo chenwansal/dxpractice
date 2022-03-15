@@ -158,11 +158,14 @@
     <ClCompile Include="Engine\Window\RenderWindow.cpp" />
     <ClCompile Include="Engine\Base\StringConverter.cpp" />
     <ClCompile Include="Engine\Window\WindowContainer.cpp" />
+    <ClCompile Include="Engine\Graphics\Shaders.cpp" />
     <ClCompile Include="WinMain.cpp" />
+    <ClCompile Include="Generic\PathHelper.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\EngineCore.h" />
     <ClInclude Include="Engine\Graphics\GraphicAdapterReader.h" />
+    <ClInclude Include="Engine\Graphics\Vertex.h" />
     <ClInclude Include="Engine\Keyboard\KeyboardDevice.h" />
     <ClInclude Include="Engine\Mouse\MouseDevice.h" />
     <ClInclude Include="Engine\Mouse\MouseEvent.h" />
@@ -173,9 +176,21 @@
     <ClInclude Include="Engine\Base\StringConverter.h" />
     <ClInclude Include="Engine\Logger\PLogger.h" />
     <ClInclude Include="Engine\Window\WindowContainer.h" />
+    <ClInclude Include="Engine\Graphics\Shaders.h" />
+    <ClInclude Include="Generic\PathHelper.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="依赖关系.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="Shaders\pixelshader.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+    </FxCompile>
+    <FxCompile Include="Shaders\vertexshader.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+    </FxCompile>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -7,4 +7,5 @@ class PLogger {
     static void ConsoleLog(string message);
     static void PopupError(string message);
     static void PopupErrorWithResult(HRESULT hr, string message);
+    static void PopupErrorWithResult(HRESULT hr, wstring message);
 };

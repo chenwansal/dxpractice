@@ -11,7 +11,8 @@ bool WindowContainer::Initialize(HINSTANCE hInstance, string window_title,
     PLogger::ConsoleLog("mouse init\r\n");
 
     // WINDOW
-    if (!renderWindow.Initialize(this, hInstance, window_title, window_class, width, height)) {
+    if (!renderWindow.Initialize(this, hInstance, window_title, window_class,
+                                 width, height)) {
         return false;
     }
     PLogger::ConsoleLog("window init\r\n");
@@ -118,6 +119,7 @@ LRESULT CALLBACK WindowContainer::OnWindowProc(HWND hwnd, UINT msg,
             this->mouse.RecordWheelScrollDown(x, y);
         }
         break;
+        return DefWindowProc(hwnd, msg, wParam, lParam);
     }
     default:
         return DefWindowProc(hwnd, msg, wParam, lParam);

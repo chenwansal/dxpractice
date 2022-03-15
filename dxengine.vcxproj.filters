@@ -34,7 +34,15 @@
     <ClCompile Include="Engine\Graphics\Graphics.cpp">
       <Filter>Source\Engine\Graphics</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Graphics\GraphicAdapterReader.cpp" />
+    <ClCompile Include="Engine\Graphics\GraphicAdapterReader.cpp">
+      <Filter>Source\Engine\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Graphics\Shaders.cpp">
+      <Filter>Source\Engine\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="Generic\PathHelper.cpp">
+      <Filter>Source\Generic</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\EngineCore.h">
@@ -70,7 +78,18 @@
     <ClInclude Include="Engine\Graphics\Graphics.h">
       <Filter>Header\Engine\Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Graphics\GraphicAdapterReader.h" />
+    <ClInclude Include="Engine\Graphics\Vertex.h">
+      <Filter>Header\Engine\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Graphics\GraphicAdapterReader.h">
+      <Filter>Header\Engine\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Graphics\Shaders.h">
+      <Filter>Header\Engine\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Generic\PathHelper.h">
+      <Filter>Header\Generic</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Header">
@@ -121,8 +140,25 @@
     <Filter Include="Header\Engine\Graphics">
       <UniqueIdentifier>{68a7ea15-37ae-41bd-9305-9c49268c1f83}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Shaders">
+      <UniqueIdentifier>{294bca40-35c3-457a-9be7-85667b75b63c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header\Generic">
+      <UniqueIdentifier>{6fa40496-7214-4f5d-af61-1712b620c66e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Generic">
+      <UniqueIdentifier>{684bb9f2-39ca-41a9-a0a9-85784c52d915}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="依赖关系.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="Shaders\vertexshader.hlsl">
+      <Filter>Source\Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\pixelshader.hlsl">
+      <Filter>Source\Shaders</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>
