@@ -131,6 +131,9 @@ bool Graphics::InitializeShaders() {
 
     D3D11_INPUT_ELEMENT_DESC layoutDesc[] = {
         {"POSITION", 0, DXGI_FORMAT::DXGI_FORMAT_R32G32_FLOAT, 0, 0,
+         D3D11_INPUT_CLASSIFICATION::D3D11_INPUT_PER_VERTEX_DATA, 0},
+        {"COLOR", 0, DXGI_FORMAT::DXGI_FORMAT_R32G32B32_FLOAT, 0,
+         D3D11_APPEND_ALIGNED_ELEMENT,
          D3D11_INPUT_CLASSIFICATION::D3D11_INPUT_PER_VERTEX_DATA, 0}};
     UINT numElements = ARRAYSIZE(layoutDesc);
 
@@ -150,11 +153,15 @@ bool Graphics::InitializeShaders() {
 
 bool Graphics::InitializeScene() {
 
+    XMFLOAT3 redColor = XMFLOAT3(1.0f, 0.0f, 0.0f);
+    XMFLOAT3 greenColor = XMFLOAT3(0.0f, 1.0f, 0.0f);
+    XMFLOAT3 blueColor = XMFLOAT3(0.0f, 0.0f, 1.0f);
+
     // Vertices
     Vertex v[] = {
-        Vertex(0.0f, 0.1f),  // TOP
-        Vertex(0.1f, 0.0f),  // RIGHT
-        Vertex(-0.1f, 0.0f), // LEFT
+        Vertex(0.0f, 0.5f, redColor), // TOP
+        Vertex(0.5f, -0.5f, greenColor),  // RIGHT
+        Vertex(-0.5f, -0.5f, blueColor), // LEFT
     };
 
     D3D11_BUFFER_DESC vertexBufferDesc;
