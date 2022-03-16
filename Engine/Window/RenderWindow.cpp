@@ -27,10 +27,19 @@ bool RenderWindow::Initialize(IWindowContainer *ptrWindowContainer,
 
     this->RegisterWindowClass();
 
+    int windowCenterX = GetSystemMetrics(SM_CXSCREEN) / 2 - this->width / 2;
+    int windowCenterY = GetSystemMetrics(SM_CYSCREEN) / 2 - this->height / 2;
+
+    // WINDOW RECT
+    RECT wr;
+    wr.left = windowCenterX;
+    wr.top = windowCenterY;
+    wr.right = wr.left + width;
+    wr.bottom = wr.top + height;
+
     this->handle = CreateWindowEx(
         0, this->window_class_wide.c_str(), this->window_title_wide.c_str(),
-        WS_CAPTION | WS_MINIMIZEBOX | WS_SYSMENU, 0, 0, this->width,
-        this->height, NULL, NULL, this->hInstance, ptrWindowContainer);
+        WS_CAPTION | WS_MINIMIZEBOX | WS_SYSMENU, wr.left, wr.top, wr.right - wr.left, wr.bottom - wr.top, NULL, NULL, this->hInstance, ptrWindowContainer);
 
     if (this->handle == NULL) {
         PLogger::PopupErrorWithResult(
