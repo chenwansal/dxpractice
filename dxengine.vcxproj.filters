@@ -154,10 +154,10 @@
     <Text Include="依赖关系.txt" />
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="Shaders\vertexshader.hlsl">
+    <FxCompile Include="Data\Shaders\vertexshader.hlsl">
       <Filter>Source\Shaders</Filter>
     </FxCompile>
-    <FxCompile Include="Shaders\pixelshader.hlsl">
+    <FxCompile Include="Data\Shaders\pixelshader.hlsl">
       <Filter>Source\Shaders</Filter>
     </FxCompile>
   </ItemGroup>

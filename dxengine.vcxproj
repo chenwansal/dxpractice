@@ -183,11 +183,11 @@
     <Text Include="依赖关系.txt" />
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="Shaders\pixelshader.hlsl">
+    <FxCompile Include="Data\Shaders\pixelshader.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
     </FxCompile>
-    <FxCompile Include="Shaders\vertexshader.hlsl">
+    <FxCompile Include="Data\Shaders\vertexshader.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
     </FxCompile>

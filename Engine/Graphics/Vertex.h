@@ -4,16 +4,23 @@ using namespace DirectX;
 
 struct Vertex {
 
-    XMFLOAT2 pos;
+    XMFLOAT3 pos;
     XMFLOAT3 color;
 
-    Vertex() : Vertex(0, 0, 1.0f, 1.0f, 1.0f) {
+    Vertex() {
+        this->pos = XMFLOAT3();
+        this->color = XMFLOAT3();
     }
-    Vertex(float x, float y, XMFLOAT3 color) : Vertex(x, y, color.x, color.y, color.z) {
+    Vertex(XMFLOAT3 pos, XMFLOAT3 color){
+        this->pos = pos;
+        this->color = color;
     }
-    Vertex(float x, float y, float r, float g, float b) {
-        this->pos.x = x;
-        this->pos.y = y;
+    Vertex(float x, float y, float z, XMFLOAT3 color) {
+        this->pos = XMFLOAT3(x, y, z);
+        this->color = color;
+    }
+    Vertex(float x, float y, float z, float r, float g, float b) {
+        this->pos = XMFLOAT3(x, y, z);
         this->color = XMFLOAT3(r, g, b);
     }
 };

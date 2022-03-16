@@ -23,38 +23,59 @@ void Graphics::RenderFrame() {
     float bgcolor[] = {0.1f, 0.1f, 0.1f, 1.0f};
 
     // CLEAR RENDER TARGET VIEW
-    this->ptrDeviceContext->ClearRenderTargetView(
-        this->ptrRenderTargetView.Get(), bgcolor);
+    this->cptrDeviceContext->ClearRenderTargetView(
+        this->cptrRenderTargetView.Get(), bgcolor);
+
+    // CLEAR DEPTH STENCIL VIEW
+    this->cptrDeviceContext->ClearDepthStencilView(
+        this->cptrDepthStencilView.Get(),
+        D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 
     // SET INPUT LAYOUT
-    this->ptrDeviceContext->IASetInputLayout(
+    this->cptrDeviceContext->IASetInputLayout(
         this->vertexshader.GetInputLayout());
 
     // SET PRIMITIVE TOPOLOGY
-    this->ptrDeviceContext->IASetPrimitiveTopology(
+    this->cptrDeviceContext->IASetPrimitiveTopology(
         D3D11_PRIMITIVE_TOPOLOGY::D3D10_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
     // SET RASTERIZER STATE
-    this->ptrDeviceContext->RSSetState(this->ptrRasterizerState.Get());
+    this->cptrDeviceContext->RSSetState(this->cptrRasterizerState.Get());
+
+    // SET OUTPUT MERGER STENCIL STATE
+    this->cptrDeviceContext->OMSetDepthStencilState(
+        this->cptrDepthStencilState.Get(), 0);
 
     // SET VERTEX SHADER
-    this->ptrDeviceContext->VSSetShader(vertexshader.GetShader(), NULL, 0);
+    this->cptrDeviceContext->VSSetShader(vertexshader.GetShader(), NULL, 0);
 
     // SET PIXEL SHADER
-    this->ptrDeviceContext->PSSetShader(pixelshader.GetShader(), NULL, 0);
+    this->cptrDeviceContext->PSSetShader(pixelshader.GetShader(), NULL, 0);
 
     // SET VERTEX BUFFERS
+    // AND DRAW
     UINT stride = sizeof(Vertex);
     UINT offset = 0;
-    this->ptrDeviceContext->IASetVertexBuffers(
-        0, 1, ptrVertexBuffer.GetAddressOf(), &stride, &offset);
 
-    // DRAW
-    this->ptrDeviceContext->Draw(3, 0);
+    // BLUE SMALL
+    this->cptrDeviceContext->IASetVertexBuffers(
+        0, 1, cptrVertexBuffer2.GetAddressOf(), &stride, &offset);
+    this->cptrDeviceContext->Draw(3, 0);
+
+    // RED BIG
+    this->cptrDeviceContext->IASetVertexBuffers(
+        0, 1, cptrVertexBuffer.GetAddressOf(), &stride, &offset);
+    this->cptrDeviceContext->Draw(3, 0);
+
+    // DRAW TEXT
+    uptrSpriteBatch->Begin();
+    uptrSpriteFont->DrawString(uptrSpriteBatch.get(), L"hello world",
+                               XMFLOAT2(0.0f, 0.0f), Colors::White, 0.0f,
+                               XMFLOAT2(0.0f, 0.0f), XMFLOAT2(1.0f, 1.0f));
+    uptrSpriteBatch->End();
 
     // SWAP CHAIN
-    this->ptrSwapchain->Present(1, NULL);
-
+    this->cptrSwapchain->Present(1, NULL);
 }
 
 // private instance
@@ -93,9 +114,9 @@ bool Graphics::InitializeDirectX(HWND hwnd, int width, int height) {
     HRESULT hr;
     hr = D3D11CreateDeviceAndSwapChain(
         adapters[0].ptrAdapter, D3D_DRIVER_TYPE_UNKNOWN, NULL, NULL, NULL, 0,
-        D3D11_SDK_VERSION, &scd, this->ptrSwapchain.GetAddressOf(),
-        this->ptrDevice.GetAddressOf(), NULL,
-        this->ptrDeviceContext.GetAddressOf());
+        D3D11_SDK_VERSION, &scd, this->cptrSwapchain.GetAddressOf(),
+        this->cptrDevice.GetAddressOf(), NULL,
+        this->cptrDeviceContext.GetAddressOf());
 
     if (FAILED(hr)) {
         PLogger::PopupErrorWithResult(hr,
@@ -104,7 +125,7 @@ bool Graphics::InitializeDirectX(HWND hwnd, int width, int height) {
     }
 
     ComPtr<ID3D11Texture2D> backBuffer;
-    hr = this->ptrSwapchain->GetBuffer(
+    hr = this->cptrSwapchain->GetBuffer(
         0, __uuidof(ID3D11Texture2D),
         reinterpret_cast<void **>(backBuffer.GetAddressOf()));
 
@@ -114,16 +135,65 @@ bool Graphics::InitializeDirectX(HWND hwnd, int width, int height) {
     }
 
     // RENDER TARGET VIEW
-    hr = this->ptrDevice->CreateRenderTargetView(
-        backBuffer.Get(), NULL, this->ptrRenderTargetView.GetAddressOf());
+    hr = this->cptrDevice->CreateRenderTargetView(
+        backBuffer.Get(), NULL, this->cptrRenderTargetView.GetAddressOf());
 
     if (FAILED(hr)) {
-        PLogger::PopupErrorWithResult(hr, "CERATE RENDER TARGET");
+        PLogger::PopupErrorWithResult(hr, "FAILED CERATE RENDER TARGET");
         return false;
     }
 
-    this->ptrDeviceContext->OMSetRenderTargets(
-        1, this->ptrRenderTargetView.GetAddressOf(), NULL);
+    // Describe: Depth/Stencil Buffer
+    D3D11_TEXTURE2D_DESC textureDesc;
+    textureDesc.Width = width;
+    textureDesc.Height = height;
+    textureDesc.MipLevels = 1;
+    textureDesc.ArraySize = 1;
+    textureDesc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
+    textureDesc.SampleDesc.Count = 1;
+    textureDesc.SampleDesc.Quality = 0;
+    textureDesc.Usage = D3D11_USAGE_DEFAULT;
+    textureDesc.BindFlags = D3D11_BIND_DEPTH_STENCIL;
+    textureDesc.CPUAccessFlags = 0;
+    textureDesc.MiscFlags = 0;
+
+    // CREATE TEXTURE2D
+    hr = this->cptrDevice->CreateTexture2D(
+        &textureDesc, NULL, this->cptrDepthStencilBuffer.GetAddressOf());
+    if (FAILED(hr)) {
+        PLogger::PopupErrorWithResult(hr, "FAILED CERATE DEPTH STENCIL BUFFER");
+        return false;
+    }
+
+    // CREATE DEPTH STENCIL VIEW
+    hr = this->cptrDevice->CreateDepthStencilView(
+        this->cptrDepthStencilBuffer.Get(), NULL,
+        this->cptrDepthStencilView.GetAddressOf());
+    if (FAILED(hr)) {
+        PLogger::PopupErrorWithResult(hr, "FAILED CERATE DEPTH STENCIL VIEW");
+        return false;
+    }
+
+    // SET OUTPUT MERGER
+    this->cptrDeviceContext->OMSetRenderTargets(
+        1, this->cptrRenderTargetView.GetAddressOf(),
+        this->cptrDepthStencilView.Get());
+
+    // CREATE DEPTH STENCIL STATE
+    D3D11_DEPTH_STENCIL_DESC depthStencilDesc;
+    ZeroMemory(&depthStencilDesc, sizeof(D3D11_DEPTH_STENCIL_DESC));
+
+    depthStencilDesc.DepthEnable = true;
+    depthStencilDesc.DepthWriteMask =
+        D3D11_DEPTH_WRITE_MASK::D3D11_DEPTH_WRITE_MASK_ALL;
+    depthStencilDesc.DepthFunc = D3D11_COMPARISON_FUNC::D3D11_COMPARISON_LESS_EQUAL;
+
+    hr = this->cptrDevice->CreateDepthStencilState(
+        &depthStencilDesc, this->cptrDepthStencilState.GetAddressOf());
+    if (FAILED(hr)) {
+        PLogger::PopupErrorWithResult(hr, "FAILED CERATE DEPTH STENCIL STATE");
+        return false;
+    }
 
     // CREATE VIEWPORT
     D3D11_VIEWPORT viewport;
@@ -133,21 +203,28 @@ bool Graphics::InitializeDirectX(HWND hwnd, int width, int height) {
     viewport.TopLeftY = 0;
     viewport.Width = (float)width;
     viewport.Height = (float)height;
+    viewport.MinDepth = 0.0f;
+    viewport.MaxDepth = 1.0f;
 
     // Set Viewport
-    this->ptrDeviceContext->RSSetViewports(1, &viewport);
+    this->cptrDeviceContext->RSSetViewports(1, &viewport);
 
     // Create Rasterizer State
     D3D11_RASTERIZER_DESC rasterizerDesc;
     ZeroMemory(&rasterizerDesc, sizeof(D3D11_RASTERIZER_DESC));
     rasterizerDesc.FillMode = D3D11_FILL_MODE::D3D11_FILL_SOLID;
     rasterizerDesc.CullMode = D3D11_CULL_MODE::D3D11_CULL_NONE;
-    hr = this->ptrDevice->CreateRasterizerState(
-        &rasterizerDesc, this->ptrRasterizerState.GetAddressOf());
+    hr = this->cptrDevice->CreateRasterizerState(
+        &rasterizerDesc, this->cptrRasterizerState.GetAddressOf());
     if (FAILED(hr)) {
         PLogger::PopupErrorWithResult(hr, "FAILED TO CREATE RASTERIZER STATE");
         return false;
     }
+
+    // SET FONTS
+    uptrSpriteBatch = make_unique<SpriteBatch>(this->cptrDeviceContext.Get());
+    uptrSpriteFont = make_unique<SpriteFont>(
+        this->cptrDevice.Get(), L"Data/SpriteFonts/songti_16.sfont");
 
     return true;
 }
@@ -155,7 +232,7 @@ bool Graphics::InitializeDirectX(HWND hwnd, int width, int height) {
 bool Graphics::InitializeShaders() {
 
     D3D11_INPUT_ELEMENT_DESC layoutDesc[] = {
-        {"POSITION", 0, DXGI_FORMAT::DXGI_FORMAT_R32G32_FLOAT, 0, 0,
+        {"POSITION", 0, DXGI_FORMAT::DXGI_FORMAT_R32G32B32_FLOAT, 0, 0,
          D3D11_INPUT_CLASSIFICATION::D3D11_INPUT_PER_VERTEX_DATA, 0},
         {"COLOR", 0, DXGI_FORMAT::DXGI_FORMAT_R32G32B32_FLOAT, 0,
          D3D11_APPEND_ALIGNED_ELEMENT,
@@ -163,12 +240,12 @@ bool Graphics::InitializeShaders() {
     UINT numElements = ARRAYSIZE(layoutDesc);
 
     wstring path = PathHelper::GetEnvironmentDir();
-    if (!vertexshader.Initialize(ptrDevice, path + L"vertexshader.cso",
+    if (!vertexshader.Initialize(cptrDevice, path + L"vertexshader.cso",
                                  layoutDesc, numElements)) {
         return false;
     }
 
-    if (!pixelshader.Initialize(ptrDevice, path + L"pixelshader.cso",
+    if (!pixelshader.Initialize(cptrDevice, path + L"pixelshader.cso",
                                 layoutDesc, numElements)) {
         return false;
     }
@@ -182,29 +259,51 @@ bool Graphics::InitializeScene() {
     XMFLOAT3 greenColor = XMFLOAT3(0.0f, 1.0f, 0.0f);
     XMFLOAT3 blueColor = XMFLOAT3(0.0f, 0.0f, 1.0f);
 
-    // Vertices
+    // Vertices RED BIG
     Vertex v[] = {
-        Vertex(0.0f, 0.5f, redColor), // TOP
-        Vertex(0.5f, -0.5f, greenColor),  // RIGHT
-        Vertex(-0.5f, -0.5f, blueColor), // LEFT
+        Vertex(-0.5f, -0.5f, 1.0f, redColor), // BOTTOM LEFT
+        Vertex(0.0f, 0.5f, 1.0f, redColor),   // TOP CENTER
+        Vertex(0.5f, -0.5f, 1.0f, redColor),  // BOTTOM RIGHT
     };
+
+    bool isSuc;
+
+    isSuc = this->AppendVertexBuffer(v, ARRAYSIZE(v),
+                                     this->cptrVertexBuffer.GetAddressOf());
+    if (!isSuc) {
+        return isSuc;
+    }
+
+    // Vertices BLUE SMALL
+    Vertex v2[] = {
+        Vertex(-0.25f, -0.25f, 0.0f, blueColor), // BOTTOM LEFT
+        Vertex(0.0f, 0.25f, 0.0f, blueColor),    // TOP CENTER
+        Vertex(0.25f, -0.25f, 0.0f, blueColor),  // BOTTOM RIGHT
+    };
+    isSuc = this->AppendVertexBuffer(v2, ARRAYSIZE(v2),
+                                     this->cptrVertexBuffer2.GetAddressOf());
+
+    return isSuc;
+}
+
+bool Graphics::AppendVertexBuffer(Vertex *vertices, int size,
+                                  ID3D11Buffer **ptrVertexBuffer) {
 
     D3D11_BUFFER_DESC vertexBufferDesc;
     ZeroMemory(&vertexBufferDesc, sizeof(vertexBufferDesc));
 
     vertexBufferDesc.Usage = D3D11_USAGE_DEFAULT;
-    vertexBufferDesc.ByteWidth = sizeof(Vertex) * ARRAYSIZE(v);
+    vertexBufferDesc.ByteWidth = sizeof(Vertex) * size;
     vertexBufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
     vertexBufferDesc.CPUAccessFlags = 0;
     vertexBufferDesc.MiscFlags = 0;
 
     D3D11_SUBRESOURCE_DATA vertexBufferData;
     ZeroMemory(&vertexBufferData, sizeof(vertexBufferData));
-    vertexBufferData.pSysMem = v;
+    vertexBufferData.pSysMem = vertices;
 
-    HRESULT hr =
-        this->ptrDevice->CreateBuffer(&vertexBufferDesc, &vertexBufferData,
-                                      this->ptrVertexBuffer.GetAddressOf());
+    HRESULT hr = this->cptrDevice->CreateBuffer(
+        &vertexBufferDesc, &vertexBufferData, ptrVertexBuffer);
     if (FAILED(hr)) {
         PLogger::PopupErrorWithResult(hr, "FAILED TO CREATE BUFFER");
         return false;
