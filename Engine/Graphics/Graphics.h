@@ -16,6 +16,7 @@ class Graphics {
     ComPtr<IDXGISwapChain> ptrSwapchain;
     ComPtr<ID3D11RenderTargetView> ptrRenderTargetView;
     ComPtr<ID3D11Buffer> ptrVertexBuffer;
+    ComPtr<ID3D11RasterizerState> ptrRasterizerState;
 
     VertexShader vertexshader;
     PixelShader pixelshader;

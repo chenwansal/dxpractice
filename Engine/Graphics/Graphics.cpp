@@ -22,26 +22,39 @@ void Graphics::RenderFrame() {
 
     float bgcolor[] = {0.1f, 0.1f, 0.1f, 1.0f};
 
+    // CLEAR RENDER TARGET VIEW
     this->ptrDeviceContext->ClearRenderTargetView(
         this->ptrRenderTargetView.Get(), bgcolor);
 
+    // SET INPUT LAYOUT
     this->ptrDeviceContext->IASetInputLayout(
         this->vertexshader.GetInputLayout());
 
+    // SET PRIMITIVE TOPOLOGY
     this->ptrDeviceContext->IASetPrimitiveTopology(
         D3D11_PRIMITIVE_TOPOLOGY::D3D10_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
+    // SET RASTERIZER STATE
+    this->ptrDeviceContext->RSSetState(this->ptrRasterizerState.Get());
+
+    // SET VERTEX SHADER
     this->ptrDeviceContext->VSSetShader(vertexshader.GetShader(), NULL, 0);
+
+    // SET PIXEL SHADER
     this->ptrDeviceContext->PSSetShader(pixelshader.GetShader(), NULL, 0);
 
+    // SET VERTEX BUFFERS
     UINT stride = sizeof(Vertex);
     UINT offset = 0;
     this->ptrDeviceContext->IASetVertexBuffers(
         0, 1, ptrVertexBuffer.GetAddressOf(), &stride, &offset);
 
+    // DRAW
     this->ptrDeviceContext->Draw(3, 0);
 
+    // SWAP CHAIN
     this->ptrSwapchain->Present(1, NULL);
+
 }
 
 // private instance
@@ -123,6 +136,18 @@ bool Graphics::InitializeDirectX(HWND hwnd, int width, int height) {
 
     // Set Viewport
     this->ptrDeviceContext->RSSetViewports(1, &viewport);
+
+    // Create Rasterizer State
+    D3D11_RASTERIZER_DESC rasterizerDesc;
+    ZeroMemory(&rasterizerDesc, sizeof(D3D11_RASTERIZER_DESC));
+    rasterizerDesc.FillMode = D3D11_FILL_MODE::D3D11_FILL_SOLID;
+    rasterizerDesc.CullMode = D3D11_CULL_MODE::D3D11_CULL_NONE;
+    hr = this->ptrDevice->CreateRasterizerState(
+        &rasterizerDesc, this->ptrRasterizerState.GetAddressOf());
+    if (FAILED(hr)) {
+        PLogger::PopupErrorWithResult(hr, "FAILED TO CREATE RASTERIZER STATE");
+        return false;
+    }
 
     return true;
 }
