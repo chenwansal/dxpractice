@@ -2,19 +2,45 @@
 
 // public instance
 bool Graphics::Initialize(HWND hwnd, int width, int height) {
+
     if (!InitializeDirectX(hwnd, width, height)) {
         return false;
     }
+
     if (!InitializeShaders()) {
         return false;
     }
+
+    if (!InitializeScene()) {
+        return false;
+    }
+
     return true;
 }
 
 void Graphics::RenderFrame() {
-    float bgcolor[] = {0.0f, 0.0f, 1.0f, 1.0f};
+
+    float bgcolor[] = {0.1f, 0.1f, 0.1f, 1.0f};
+
     this->ptrDeviceContext->ClearRenderTargetView(
         this->ptrRenderTargetView.Get(), bgcolor);
+
+    this->ptrDeviceContext->IASetInputLayout(
+        this->vertexshader.GetInputLayout());
+
+    this->ptrDeviceContext->IASetPrimitiveTopology(
+        D3D11_PRIMITIVE_TOPOLOGY::D3D10_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+
+    this->ptrDeviceContext->VSSetShader(vertexshader.GetShader(), NULL, 0);
+    this->ptrDeviceContext->PSSetShader(pixelshader.GetShader(), NULL, 0);
+
+    UINT stride = sizeof(Vertex);
+    UINT offset = 0;
+    this->ptrDeviceContext->IASetVertexBuffers(
+        0, 1, ptrVertexBuffer.GetAddressOf(), &stride, &offset);
+
+    this->ptrDeviceContext->Draw(3, 0);
+
     this->ptrSwapchain->Present(1, NULL);
 }
 
@@ -92,8 +118,8 @@ bool Graphics::InitializeDirectX(HWND hwnd, int width, int height) {
 
     viewport.TopLeftX = 0;
     viewport.TopLeftY = 0;
-    viewport.Width = width;
-    viewport.Height = height;
+    viewport.Width = (float)width;
+    viewport.Height = (float)height;
 
     // Set Viewport
     this->ptrDeviceContext->RSSetViewports(1, &viewport);
@@ -116,6 +142,39 @@ bool Graphics::InitializeShaders() {
 
     if (!pixelshader.Initialize(ptrDevice, path + L"pixelshader.cso",
                                 layoutDesc, numElements)) {
+        return false;
+    }
+
+    return true;
+}
+
+bool Graphics::InitializeScene() {
+
+    // Vertices
+    Vertex v[] = {
+        Vertex(0.0f, 0.1f),  // TOP
+        Vertex(0.1f, 0.0f),  // RIGHT
+        Vertex(-0.1f, 0.0f), // LEFT
+    };
+
+    D3D11_BUFFER_DESC vertexBufferDesc;
+    ZeroMemory(&vertexBufferDesc, sizeof(vertexBufferDesc));
+
+    vertexBufferDesc.Usage = D3D11_USAGE_DEFAULT;
+    vertexBufferDesc.ByteWidth = sizeof(Vertex) * ARRAYSIZE(v);
+    vertexBufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+    vertexBufferDesc.CPUAccessFlags = 0;
+    vertexBufferDesc.MiscFlags = 0;
+
+    D3D11_SUBRESOURCE_DATA vertexBufferData;
+    ZeroMemory(&vertexBufferData, sizeof(vertexBufferData));
+    vertexBufferData.pSysMem = v;
+
+    HRESULT hr =
+        this->ptrDevice->CreateBuffer(&vertexBufferDesc, &vertexBufferData,
+                                      this->ptrVertexBuffer.GetAddressOf());
+    if (FAILED(hr)) {
+        PLogger::PopupErrorWithResult(hr, "FAILED TO CREATE BUFFER");
         return false;
     }
 
