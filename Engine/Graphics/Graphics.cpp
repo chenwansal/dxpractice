@@ -59,10 +59,24 @@ void Graphics::RenderFrame() {
     // SET VERTEX BUFFERS
     // AND DRAW
     UINT offset = 0;
+
+    // Update Constant Buffer
+    static float yOff = 0.5f;
+    yOff -= 0.01f;
+    constantBuffer.data.xOffset = 0.0f;
+    constantBuffer.data.yOffset = yOff;
+    if (!constantBuffer.ApplyChanges(this->cptrDeviceContext.Get())) {
+        return;
+    }
+    this->cptrDeviceContext->VSSetConstantBuffers(
+        0, 1, constantBuffer.GetAddressOf());
+
+    // DRAW SQUARE
     this->cptrDeviceContext->PSSetShaderResources(
         0, 1, this->cptrMyTexture.GetAddressOf());
     this->cptrDeviceContext->IASetVertexBuffers(
-        0, 1, this->vertexBuffer.GetAddressOf(), this->vertexBuffer.StridePtr(), &offset);
+        0, 1, this->vertexBuffer.GetAddressOf(), this->vertexBuffer.StridePtr(),
+        &offset);
     this->cptrDeviceContext->IASetIndexBuffer(this->indexBuffer.Get(),
                                               DXGI_FORMAT_R32_UINT, 0);
     this->cptrDeviceContext->DrawIndexed(this->indexBuffer.BufferSize(), 0, 0);
@@ -274,11 +288,6 @@ bool Graphics::InitializeShaders() {
 
 bool Graphics::InitializeScene() {
 
-    XMFLOAT3 redColor = XMFLOAT3(1.0f, 0.0f, 0.0f);
-    XMFLOAT3 greenColor = XMFLOAT3(0.0f, 1.0f, 0.0f);
-    XMFLOAT3 blueColor = XMFLOAT3(0.0f, 0.0f, 1.0f);
-    XMFLOAT2 uv = XMFLOAT2(0, 0);
-
     // Vertices Square
     Vertex v[] = {
         Vertex(-0.5f, -0.5f, 1.0f, 0, 1), // BOTTOM LEFT - [0]
@@ -287,28 +296,19 @@ bool Graphics::InitializeScene() {
         Vertex(0.5f, -0.5f, 1.0f, 1, 1),  // BOTTOM RIGHT [3]
     };
 
-    DWORD indices[] = {0, 1, 2, 0, 2, 3};
-
-    bool isSuc;
-
-    isSuc =
-        this->AppendVertexBuffer(v, ARRAYSIZE(v), indices, ARRAYSIZE(indices));
-    return isSuc;
-}
-
-bool Graphics::AppendVertexBuffer(Vertex *vertices, int verticesCount,
-                                  DWORD *indices, int indicesCount) {
-
     // Load Vertex Buffer
-    HRESULT hr = this->vertexBuffer.Initialize(this->cptrDevice.Get(), vertices,
-                                               verticesCount);
+    HRESULT hr =
+        this->vertexBuffer.Initialize(this->cptrDevice.Get(), v, ARRAYSIZE(v));
     if (FAILED(hr)) {
         PLogger::PopupErrorWithResult(hr, "FAILED TO CREATE BUFFER");
         return false;
     }
 
     // Load Index Data
-    hr = this->indexBuffer.Initialize(this->cptrDevice.Get(), indices, indicesCount);
+    DWORD indices[] = {0, 1, 2, 0, 2, 3};
+
+    hr = this->indexBuffer.Initialize(this->cptrDevice.Get(), indices,
+                                      ARRAYSIZE(indices));
     if (FAILED(hr)) {
         PLogger::PopupErrorWithResult(hr, "FAILED TO INDICES BUFFER");
         return false;
@@ -320,6 +320,13 @@ bool Graphics::AppendVertexBuffer(Vertex *vertices, int verticesCount,
                                   this->cptrMyTexture.GetAddressOf());
     if (FAILED(hr)) {
         PLogger::PopupErrorWithResult(hr, "FAILED TO CREATE WIC Texture");
+        return false;
+    }
+
+    // Initialize Constant Buffer
+    hr = this->constantBuffer.Initialize(this->cptrDevice.Get());
+    if (FAILED(hr)) {
+        PLogger::PopupErrorWithResult(hr, "FAILED TO CREATE CONSTANT BUFFER");
         return false;
     }
 

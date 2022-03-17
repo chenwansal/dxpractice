@@ -96,6 +96,12 @@
     <ClInclude Include="Engine\Graphics\IndexBuffer.h">
       <Filter>Header\Engine\Graphics</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\Graphics\ConstantBufferTypes.h">
+      <Filter>Header\Engine\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Graphics\ConstantBuffer.h">
+      <Filter>Header\Engine\Graphics</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Header">
