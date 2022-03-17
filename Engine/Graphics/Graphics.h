@@ -6,6 +6,7 @@
 #include <d3d11.h>
 #include <SpriteBatch.h>
 #include <SpriteFont.h>
+#include <WICTextureLoader.h>
 
 class Graphics {
   public:
@@ -19,10 +20,8 @@ class Graphics {
     ComPtr<ID3D11RenderTargetView> cptrRenderTargetView;
 
     VertexShader vertexshader;
-    PixelShader pixelshader;
 
     ComPtr<ID3D11Buffer> cptrVertexBuffer;
-    ComPtr<ID3D11Buffer> cptrVertexBuffer2;
 
     ComPtr<ID3D11DepthStencilView> cptrDepthStencilView;
     ComPtr<ID3D11Texture2D> cptrDepthStencilBuffer;
@@ -30,8 +29,13 @@ class Graphics {
 
     ComPtr<ID3D11RasterizerState> cptrRasterizerState;
 
+    PixelShader pixelshader;
+
     unique_ptr<SpriteBatch> uptrSpriteBatch;
     unique_ptr<SpriteFont> uptrSpriteFont;
+
+    ComPtr<ID3D11SamplerState> cptrSamplerState;
+    ComPtr<ID3D11ShaderResourceView> cptrMyTexture;
 
     bool InitializeDirectX(HWND hwnd, int width, int height);
     bool InitializeShaders();

@@ -46,6 +46,10 @@ void Graphics::RenderFrame() {
     this->cptrDeviceContext->OMSetDepthStencilState(
         this->cptrDepthStencilState.Get(), 0);
 
+    // SET PS Sampler
+    this->cptrDeviceContext->PSSetSamplers(
+        0, 1, this->cptrSamplerState.GetAddressOf());
+
     // SET VERTEX SHADER
     this->cptrDeviceContext->VSSetShader(vertexshader.GetShader(), NULL, 0);
 
@@ -56,20 +60,15 @@ void Graphics::RenderFrame() {
     // AND DRAW
     UINT stride = sizeof(Vertex);
     UINT offset = 0;
-
-    // BLUE SMALL
-    this->cptrDeviceContext->IASetVertexBuffers(
-        0, 1, cptrVertexBuffer2.GetAddressOf(), &stride, &offset);
-    this->cptrDeviceContext->Draw(3, 0);
-
-    // RED BIG
+    this->cptrDeviceContext->PSSetShaderResources(
+        0, 1, this->cptrMyTexture.GetAddressOf());
     this->cptrDeviceContext->IASetVertexBuffers(
         0, 1, cptrVertexBuffer.GetAddressOf(), &stride, &offset);
-    this->cptrDeviceContext->Draw(3, 0);
+    this->cptrDeviceContext->Draw(6, 0);
 
     // DRAW TEXT
     uptrSpriteBatch->Begin();
-    uptrSpriteFont->DrawString(uptrSpriteBatch.get(), L"hello world",
+    uptrSpriteFont->DrawString(uptrSpriteBatch.get(), L"hello pig",
                                XMFLOAT2(0.0f, 0.0f), Colors::White, 0.0f,
                                XMFLOAT2(0.0f, 0.0f), XMFLOAT2(1.0f, 1.0f));
     uptrSpriteBatch->End();
@@ -186,7 +185,8 @@ bool Graphics::InitializeDirectX(HWND hwnd, int width, int height) {
     depthStencilDesc.DepthEnable = true;
     depthStencilDesc.DepthWriteMask =
         D3D11_DEPTH_WRITE_MASK::D3D11_DEPTH_WRITE_MASK_ALL;
-    depthStencilDesc.DepthFunc = D3D11_COMPARISON_FUNC::D3D11_COMPARISON_LESS_EQUAL;
+    depthStencilDesc.DepthFunc =
+        D3D11_COMPARISON_FUNC::D3D11_COMPARISON_LESS_EQUAL;
 
     hr = this->cptrDevice->CreateDepthStencilState(
         &depthStencilDesc, this->cptrDepthStencilState.GetAddressOf());
@@ -226,6 +226,24 @@ bool Graphics::InitializeDirectX(HWND hwnd, int width, int height) {
     uptrSpriteFont = make_unique<SpriteFont>(
         this->cptrDevice.Get(), L"Data/SpriteFonts/songti_16.sfont");
 
+    // Create Sampler Description
+    D3D11_SAMPLER_DESC samplerDesc;
+    ZeroMemory(&samplerDesc, sizeof(D3D11_SAMPLER_DESC));
+    samplerDesc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
+    samplerDesc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
+    samplerDesc.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
+    samplerDesc.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
+    samplerDesc.ComparisonFunc = D3D11_COMPARISON_NEVER;
+    samplerDesc.MinLOD = 0;
+    samplerDesc.MaxLOD = D3D11_FLOAT32_MAX;
+
+    hr = this->cptrDevice->CreateSamplerState(
+        &samplerDesc, this->cptrSamplerState.GetAddressOf());
+    if (FAILED(hr)) {
+        PLogger::PopupErrorWithResult(hr, "Failed To Create Sampler State");
+        return false;
+    }
+
     return true;
 }
 
@@ -234,7 +252,7 @@ bool Graphics::InitializeShaders() {
     D3D11_INPUT_ELEMENT_DESC layoutDesc[] = {
         {"POSITION", 0, DXGI_FORMAT::DXGI_FORMAT_R32G32B32_FLOAT, 0, 0,
          D3D11_INPUT_CLASSIFICATION::D3D11_INPUT_PER_VERTEX_DATA, 0},
-        {"COLOR", 0, DXGI_FORMAT::DXGI_FORMAT_R32G32B32_FLOAT, 0,
+        {"TEXCOORD", 0, DXGI_FORMAT::DXGI_FORMAT_R32G32_FLOAT, 0,
          D3D11_APPEND_ALIGNED_ELEMENT,
          D3D11_INPUT_CLASSIFICATION::D3D11_INPUT_PER_VERTEX_DATA, 0}};
     UINT numElements = ARRAYSIZE(layoutDesc);
@@ -258,31 +276,24 @@ bool Graphics::InitializeScene() {
     XMFLOAT3 redColor = XMFLOAT3(1.0f, 0.0f, 0.0f);
     XMFLOAT3 greenColor = XMFLOAT3(0.0f, 1.0f, 0.0f);
     XMFLOAT3 blueColor = XMFLOAT3(0.0f, 0.0f, 1.0f);
+    XMFLOAT2 uv = XMFLOAT2(0, 0);
 
-    // Vertices RED BIG
+    // Vertices Square
     Vertex v[] = {
-        Vertex(-0.5f, -0.5f, 1.0f, redColor), // BOTTOM LEFT
-        Vertex(0.0f, 0.5f, 1.0f, redColor),   // TOP CENTER
-        Vertex(0.5f, -0.5f, 1.0f, redColor),  // BOTTOM RIGHT
+        Vertex(-0.5f, -0.5f, 1.0f, 0, 1),   // BOTTOM LEFT
+        Vertex(-0.5f, 0.5f, 1.0f, 0, 0), // TOP LEFT
+        Vertex(0.5f, 0.5f, 1.0f, 1, 0),     // TOP RIGHT
+
+        Vertex(-0.5f, -0.5f, 1.0f, 0, 1),  // BOTTOM LEFT
+        Vertex(0.5f, -0.5f, 1.0f, 1, 1), // BOTTOM RIGHT
+        Vertex(0.5f, 0.5f, 1.0f, 1, 0),    // TOP RIGHT
+
     };
 
     bool isSuc;
 
     isSuc = this->AppendVertexBuffer(v, ARRAYSIZE(v),
                                      this->cptrVertexBuffer.GetAddressOf());
-    if (!isSuc) {
-        return isSuc;
-    }
-
-    // Vertices BLUE SMALL
-    Vertex v2[] = {
-        Vertex(-0.25f, -0.25f, 0.0f, blueColor), // BOTTOM LEFT
-        Vertex(0.0f, 0.25f, 0.0f, blueColor),    // TOP CENTER
-        Vertex(0.25f, -0.25f, 0.0f, blueColor),  // BOTTOM RIGHT
-    };
-    isSuc = this->AppendVertexBuffer(v2, ARRAYSIZE(v2),
-                                     this->cptrVertexBuffer2.GetAddressOf());
-
     return isSuc;
 }
 
@@ -306,6 +317,14 @@ bool Graphics::AppendVertexBuffer(Vertex *vertices, int size,
         &vertexBufferDesc, &vertexBufferData, ptrVertexBuffer);
     if (FAILED(hr)) {
         PLogger::PopupErrorWithResult(hr, "FAILED TO CREATE BUFFER");
+        return false;
+    }
+
+    hr = CreateWICTextureFromFile(this->cptrDevice.Get(),
+                                  L"Data/Textures/avatar.jpg", nullptr,
+                                  this->cptrMyTexture.GetAddressOf());
+    if (FAILED(hr)) {
+        PLogger::PopupErrorWithResult(hr, "FAILED TO CREATE WIC Texture");
         return false;
     }
 

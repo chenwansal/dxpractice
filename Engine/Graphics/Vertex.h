@@ -5,22 +5,23 @@ using namespace DirectX;
 struct Vertex {
 
     XMFLOAT3 pos;
-    XMFLOAT3 color;
+    //XMFLOAT3 color;
+    XMFLOAT2 uv;
 
     Vertex() {
         this->pos = XMFLOAT3();
-        this->color = XMFLOAT3();
+        this->uv = XMFLOAT2();
     }
-    Vertex(XMFLOAT3 pos, XMFLOAT3 color){
+    Vertex(XMFLOAT3 pos, XMFLOAT2 uv) {
         this->pos = pos;
-        this->color = color;
+        this->uv = uv;
     }
-    Vertex(float x, float y, float z, XMFLOAT3 color) {
+    Vertex(float x, float y, float z, XMFLOAT2 uv) {
         this->pos = XMFLOAT3(x, y, z);
-        this->color = color;
+        this->uv = uv;
     }
-    Vertex(float x, float y, float z, float r, float g, float b) {
+    Vertex(float x, float y, float z, float u, float v) {
         this->pos = XMFLOAT3(x, y, z);
-        this->color = XMFLOAT3(r, g, b);
+        this->uv = XMFLOAT2(u, v);
     }
 };
