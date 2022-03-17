@@ -3,6 +3,8 @@
 #include "GraphicAdapterReader.h"
 #include "Shaders.h"
 #include "Vertex.h"
+#include "VertexBuffer.h"
+#include "IndexBuffer.h"
 #include <SpriteBatch.h>
 #include <SpriteFont.h>
 #include <WICTextureLoader.h>
@@ -21,8 +23,8 @@ class Graphics {
 
     VertexShader vertexshader;
 
-    ComPtr<ID3D11Buffer> cptrVertexBuffer;
-    ComPtr<ID3D11Buffer> cptrIndicesBuffer;
+    VertexBuffer<Vertex> vertexBuffer;
+    IndexBuffer indexBuffer;
 
     ComPtr<ID3D11DepthStencilView> cptrDepthStencilView;
     ComPtr<ID3D11Texture2D> cptrDepthStencilBuffer;
@@ -42,5 +44,5 @@ class Graphics {
     bool InitializeShaders();
     bool InitializeScene();
     bool AppendVertexBuffer(Vertex *vertices, int verticesCount, DWORD *indices,
-                            int indicesCount, ID3D11Buffer **ptrVertexBuffer);
+                            int indicesCount);
 };

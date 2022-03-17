@@ -58,15 +58,14 @@ void Graphics::RenderFrame() {
 
     // SET VERTEX BUFFERS
     // AND DRAW
-    UINT stride = sizeof(Vertex);
     UINT offset = 0;
     this->cptrDeviceContext->PSSetShaderResources(
         0, 1, this->cptrMyTexture.GetAddressOf());
     this->cptrDeviceContext->IASetVertexBuffers(
-        0, 1, cptrVertexBuffer.GetAddressOf(), &stride, &offset);
-    this->cptrDeviceContext->IASetIndexBuffer(this->cptrIndicesBuffer.Get(),
+        0, 1, this->vertexBuffer.GetAddressOf(), this->vertexBuffer.StridePtr(), &offset);
+    this->cptrDeviceContext->IASetIndexBuffer(this->indexBuffer.Get(),
                                               DXGI_FORMAT_R32_UINT, 0);
-    this->cptrDeviceContext->DrawIndexed(6, 0, 0);
+    this->cptrDeviceContext->DrawIndexed(this->indexBuffer.BufferSize(), 0, 0);
 
     // DRAW TEXT
     uptrSpriteBatch->Begin();
@@ -293,49 +292,23 @@ bool Graphics::InitializeScene() {
     bool isSuc;
 
     isSuc =
-        this->AppendVertexBuffer(v, ARRAYSIZE(v), indices, ARRAYSIZE(indices),
-                                 this->cptrVertexBuffer.GetAddressOf());
+        this->AppendVertexBuffer(v, ARRAYSIZE(v), indices, ARRAYSIZE(indices));
     return isSuc;
 }
 
 bool Graphics::AppendVertexBuffer(Vertex *vertices, int verticesCount,
-                                  DWORD *indices, int indicesCount,
-                                  ID3D11Buffer **ptrVertexBuffer) {
+                                  DWORD *indices, int indicesCount) {
 
     // Load Vertex Buffer
-    D3D11_BUFFER_DESC vertexBufferDesc;
-    ZeroMemory(&vertexBufferDesc, sizeof(D3D11_BUFFER_DESC));
-
-    vertexBufferDesc.Usage = D3D11_USAGE_DEFAULT;
-    vertexBufferDesc.ByteWidth = sizeof(Vertex) * verticesCount;
-    vertexBufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-    vertexBufferDesc.CPUAccessFlags = 0;
-    vertexBufferDesc.MiscFlags = 0;
-
-    D3D11_SUBRESOURCE_DATA vertexBufferData;
-    ZeroMemory(&vertexBufferData, sizeof(vertexBufferData));
-    vertexBufferData.pSysMem = vertices;
-
-    HRESULT hr = this->cptrDevice->CreateBuffer(
-        &vertexBufferDesc, &vertexBufferData, ptrVertexBuffer);
+    HRESULT hr = this->vertexBuffer.Initialize(this->cptrDevice.Get(), vertices,
+                                               verticesCount);
     if (FAILED(hr)) {
         PLogger::PopupErrorWithResult(hr, "FAILED TO CREATE BUFFER");
         return false;
     }
 
     // Load Index Data
-    D3D11_BUFFER_DESC indexBufferDesc;
-    ZeroMemory(&indexBufferDesc, sizeof(D3D11_BUFFER_DESC));
-    indexBufferDesc.Usage = D3D11_USAGE_DEFAULT;
-    indexBufferDesc.ByteWidth = sizeof(DWORD) * indicesCount;
-    indexBufferDesc.BindFlags = D3D11_BIND_INDEX_BUFFER;
-    indexBufferDesc.CPUAccessFlags = 0;
-    indexBufferDesc.MiscFlags = 0;
-
-    D3D11_SUBRESOURCE_DATA indexBufferData;
-    indexBufferData.pSysMem = indices;
-    hr = this->cptrDevice->CreateBuffer(&indexBufferDesc, &indexBufferData,
-                                        this->cptrIndicesBuffer.GetAddressOf());
+    hr = this->indexBuffer.Initialize(this->cptrDevice.Get(), indices, indicesCount);
     if (FAILED(hr)) {
         PLogger::PopupErrorWithResult(hr, "FAILED TO INDICES BUFFER");
         return false;

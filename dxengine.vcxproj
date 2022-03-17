@@ -165,7 +165,9 @@
   <ItemGroup>
     <ClInclude Include="Engine\EngineCore.h" />
     <ClInclude Include="Engine\Graphics\GraphicAdapterReader.h" />
+    <ClInclude Include="Engine\Graphics\IndexBuffer.h" />
     <ClInclude Include="Engine\Graphics\Vertex.h" />
+    <ClInclude Include="Engine\Graphics\VertexBuffer.h" />
     <ClInclude Include="Engine\Keyboard\KeyboardDevice.h" />
     <ClInclude Include="Engine\Mouse\MouseDevice.h" />
     <ClInclude Include="Engine\Mouse\MouseEvent.h" />
