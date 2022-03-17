@@ -3,10 +3,10 @@
 #include "GraphicAdapterReader.h"
 #include "Shaders.h"
 #include "Vertex.h"
-#include <d3d11.h>
 #include <SpriteBatch.h>
 #include <SpriteFont.h>
 #include <WICTextureLoader.h>
+#include <d3d11.h>
 
 class Graphics {
   public:
@@ -22,6 +22,7 @@ class Graphics {
     VertexShader vertexshader;
 
     ComPtr<ID3D11Buffer> cptrVertexBuffer;
+    ComPtr<ID3D11Buffer> cptrIndicesBuffer;
 
     ComPtr<ID3D11DepthStencilView> cptrDepthStencilView;
     ComPtr<ID3D11Texture2D> cptrDepthStencilBuffer;
@@ -40,6 +41,6 @@ class Graphics {
     bool InitializeDirectX(HWND hwnd, int width, int height);
     bool InitializeShaders();
     bool InitializeScene();
-    bool AppendVertexBuffer(Vertex *vertices, int size,
-                            ID3D11Buffer **ptrVertexBuffer);
+    bool AppendVertexBuffer(Vertex *vertices, int verticesCount, DWORD *indices,
+                            int indicesCount, ID3D11Buffer **ptrVertexBuffer);
 };

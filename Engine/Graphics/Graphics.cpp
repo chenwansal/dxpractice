@@ -64,7 +64,9 @@ void Graphics::RenderFrame() {
         0, 1, this->cptrMyTexture.GetAddressOf());
     this->cptrDeviceContext->IASetVertexBuffers(
         0, 1, cptrVertexBuffer.GetAddressOf(), &stride, &offset);
-    this->cptrDeviceContext->Draw(6, 0);
+    this->cptrDeviceContext->IASetIndexBuffer(this->cptrIndicesBuffer.Get(),
+                                              DXGI_FORMAT_R32_UINT, 0);
+    this->cptrDeviceContext->DrawIndexed(6, 0, 0);
 
     // DRAW TEXT
     uptrSpriteBatch->Begin();
@@ -280,31 +282,32 @@ bool Graphics::InitializeScene() {
 
     // Vertices Square
     Vertex v[] = {
-        Vertex(-0.5f, -0.5f, 1.0f, 0, 1),   // BOTTOM LEFT
-        Vertex(-0.5f, 0.5f, 1.0f, 0, 0), // TOP LEFT
-        Vertex(0.5f, 0.5f, 1.0f, 1, 0),     // TOP RIGHT
-
-        Vertex(-0.5f, -0.5f, 1.0f, 0, 1),  // BOTTOM LEFT
-        Vertex(0.5f, -0.5f, 1.0f, 1, 1), // BOTTOM RIGHT
-        Vertex(0.5f, 0.5f, 1.0f, 1, 0),    // TOP RIGHT
-
+        Vertex(-0.5f, -0.5f, 1.0f, 0, 1), // BOTTOM LEFT - [0]
+        Vertex(-0.5f, 0.5f, 1.0f, 0, 0),  // TOP LEFT - [1]
+        Vertex(0.5f, 0.5f, 1.0f, 1, 0),   // TOP RIGHT - [2]
+        Vertex(0.5f, -0.5f, 1.0f, 1, 1),  // BOTTOM RIGHT [3]
     };
+
+    DWORD indices[] = {0, 1, 2, 0, 2, 3};
 
     bool isSuc;
 
-    isSuc = this->AppendVertexBuffer(v, ARRAYSIZE(v),
-                                     this->cptrVertexBuffer.GetAddressOf());
+    isSuc =
+        this->AppendVertexBuffer(v, ARRAYSIZE(v), indices, ARRAYSIZE(indices),
+                                 this->cptrVertexBuffer.GetAddressOf());
     return isSuc;
 }
 
-bool Graphics::AppendVertexBuffer(Vertex *vertices, int size,
+bool Graphics::AppendVertexBuffer(Vertex *vertices, int verticesCount,
+                                  DWORD *indices, int indicesCount,
                                   ID3D11Buffer **ptrVertexBuffer) {
 
+    // Load Vertex Buffer
     D3D11_BUFFER_DESC vertexBufferDesc;
-    ZeroMemory(&vertexBufferDesc, sizeof(vertexBufferDesc));
+    ZeroMemory(&vertexBufferDesc, sizeof(D3D11_BUFFER_DESC));
 
     vertexBufferDesc.Usage = D3D11_USAGE_DEFAULT;
-    vertexBufferDesc.ByteWidth = sizeof(Vertex) * size;
+    vertexBufferDesc.ByteWidth = sizeof(Vertex) * verticesCount;
     vertexBufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
     vertexBufferDesc.CPUAccessFlags = 0;
     vertexBufferDesc.MiscFlags = 0;
@@ -320,6 +323,25 @@ bool Graphics::AppendVertexBuffer(Vertex *vertices, int size,
         return false;
     }
 
+    // Load Index Data
+    D3D11_BUFFER_DESC indexBufferDesc;
+    ZeroMemory(&indexBufferDesc, sizeof(D3D11_BUFFER_DESC));
+    indexBufferDesc.Usage = D3D11_USAGE_DEFAULT;
+    indexBufferDesc.ByteWidth = sizeof(DWORD) * indicesCount;
+    indexBufferDesc.BindFlags = D3D11_BIND_INDEX_BUFFER;
+    indexBufferDesc.CPUAccessFlags = 0;
+    indexBufferDesc.MiscFlags = 0;
+
+    D3D11_SUBRESOURCE_DATA indexBufferData;
+    indexBufferData.pSysMem = indices;
+    hr = this->cptrDevice->CreateBuffer(&indexBufferDesc, &indexBufferData,
+                                        this->cptrIndicesBuffer.GetAddressOf());
+    if (FAILED(hr)) {
+        PLogger::PopupErrorWithResult(hr, "FAILED TO INDICES BUFFER");
+        return false;
+    }
+
+    // Load Texture
     hr = CreateWICTextureFromFile(this->cptrDevice.Get(),
                                   L"Data/Textures/avatar.jpg", nullptr,
                                   this->cptrMyTexture.GetAddressOf());

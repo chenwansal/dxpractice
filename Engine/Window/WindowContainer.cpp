@@ -118,7 +118,6 @@ LRESULT CALLBACK WindowContainer::OnWindowProc(HWND hwnd, UINT msg,
         } else if (offset < 0) {
             this->mouse.RecordWheelScrollDown(x, y);
         }
-        break;
         return DefWindowProc(hwnd, msg, wParam, lParam);
     }
     default:
