@@ -61,10 +61,10 @@ void Graphics::RenderFrame() {
     UINT offset = 0;
 
     // Update Constant Buffer
-    static float yOff = 0.5f;
-    yOff -= 0.01f;
-    constantBuffer.data.xOffset = 0.0f;
-    constantBuffer.data.yOffset = yOff;
+    constantBuffer.data.mat =
+        XMMatrixRotationRollPitchYaw(0, 0, XM_PIDIV4);
+    //constantBuffer.data.mat = XMMatrixTranslation(0, 0.5f, 0);
+    constantBuffer.data.mat = XMMatrixTranspose(constantBuffer.data.mat);
     if (!constantBuffer.ApplyChanges(this->cptrDeviceContext.Get())) {
         return;
     }

@@ -33,12 +33,12 @@ bool WindowContainer::Process() {
 void WindowContainer::Update() {
     while (!this->keyboard.IsKeyBufferEmpty()) {
         KeyboardEvent kbe = this->keyboard.ReadKey();
-        // PLogger::ConsoleLog("" + kbe.GetKeyCode());
+        // PLogger::ConsoleLog(kbe);
     }
 
     while (!this->mouse.IsEventBufferEmpty()) {
         MouseEvent me = this->mouse.ReadEvent();
-        // PLogger::ConsoleLog("dd");
+        // PLogger::ConsoleLog(me);
     }
 }
 

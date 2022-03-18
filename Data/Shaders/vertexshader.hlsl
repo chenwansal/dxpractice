@@ -1,7 +1,6 @@
 cbuffer CB_VS : register(b0)
 {
-	float xOffset;
-	float yOffset;
+	float4x4 mat;
 };
 
 struct VS_INPUT
@@ -19,9 +18,8 @@ struct VS_OUTPUT
 VS_OUTPUT main(VS_INPUT input)
 {
 	VS_OUTPUT output;
-	input.inPos.x += xOffset;
-	input.inPos.y += yOffset;
-	output.outPos = float4(input.inPos, 1.0f);
+	float4 outPos = float4(input.inPos, 1.0f);
+	output.outPos = mul(outPos, mat);
 	output.outTexCoord = input.inTexCoord;
 	return output;
 }
