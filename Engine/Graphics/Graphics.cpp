@@ -64,8 +64,27 @@ void Graphics::RenderFrame() {
     UINT offset = 0;
 
     // Update Constant Buffer
-    constantBuffer.data.mat =
-        XMMatrixRotationRollPitchYaw(0, 0, XM_PIDIV4);
+    XMMATRIX worldMat = XMMatrixIdentity();
+
+    static XMVECTOR eyePos = XMVectorSet(0.0f, -4.0f, -2.0f, 0.0f);
+    XMFLOAT3 eyePosF3;
+    XMStoreFloat3(&eyePosF3, eyePos);
+    eyePosF3.y += 0.02f;
+    eyePos = XMLoadFloat3(&eyePosF3);
+    static XMVECTOR lookAtPos = XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f);
+    static XMVECTOR upVector = XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f);
+    XMMATRIX viewMat = XMMatrixLookAtLH(eyePos, lookAtPos, upVector);
+
+    float fovDegrees = 90.0f;
+    float fovRadians = (fovDegrees / 360.0f) * XM_2PI;
+    float aspectRadio = static_cast<float>(this->windowWidth) / static_cast<float>(this->windowHeight);
+    float nearZ = 0.1f;
+    float farZ = 1000.0f;
+    XMMATRIX projectionMat = XMMatrixPerspectiveFovLH(fovRadians, aspectRadio, nearZ, farZ);
+
+    constantBuffer.data.mat = worldMat * viewMat * projectionMat;
+    //constantBuffer.data.mat =
+    //    XMMatrixRotationRollPitchYaw(0, 0, XM_PIDIV4);
     //constantBuffer.data.mat = XMMatrixTranslation(0, 0.5f, 0);
     constantBuffer.data.mat = XMMatrixTranspose(constantBuffer.data.mat);
     if (!constantBuffer.ApplyChanges(this->cptrDeviceContext.Get())) {
@@ -293,10 +312,10 @@ bool Graphics::InitializeScene() {
 
     // Vertices Square
     Vertex v[] = {
-        Vertex(-0.5f, -0.5f, 1.0f, 0, 1), // BOTTOM LEFT - [0]
-        Vertex(-0.5f, 0.5f, 1.0f, 0, 0),  // TOP LEFT - [1]
-        Vertex(0.5f, 0.5f, 1.0f, 1, 0),   // TOP RIGHT - [2]
-        Vertex(0.5f, -0.5f, 1.0f, 1, 1),  // BOTTOM RIGHT [3]
+        Vertex(-0.5f, -0.5f, 0.0f, 0, 1), // BOTTOM LEFT - [0]
+        Vertex(-0.5f, 0.5f, 0.0f, 0, 0),  // TOP LEFT - [1]
+        Vertex(0.5f, 0.5f, 0.0f, 1, 0),   // TOP RIGHT - [2]
+        Vertex(0.5f, -0.5f, 0.0f, 1, 1),  // BOTTOM RIGHT [3]
     };
 
     // Load Vertex Buffer
