@@ -1,7 +1,8 @@
 #pragma once
 #include "../../Generic/PathHelper.h"
-#include "Camera/Camera.h"
+#include "../Timer/Timer.h"
 #include "Adapter/GraphicAdapterReader.h"
+#include "Camera/Camera.h"
 #include "Shader/ConstantBufferTypes.h"
 #include "Shader/Shaders.h"
 #include "ShaderBuffer/ConstantBuffer.h"
@@ -48,6 +49,8 @@ class Graphics {
 
     ComPtr<ID3D11SamplerState> cptrSamplerState;
     ComPtr<ID3D11ShaderResourceView> cptrMyTexture;
+
+    Timer fpsTimer;
 
     bool InitializeDirectX(HWND hwnd);
     bool InitializeShaders();

@@ -46,6 +46,9 @@
     <ClCompile Include="Engine\Graphics\Camera\Camera.cpp">
       <Filter>Source\Engine\Graphics\Camera</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\Timer\Timer.cpp">
+      <Filter>Source\Engine\Timer</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\EngineCore.h">
@@ -107,6 +110,9 @@
     </ClInclude>
     <ClInclude Include="Engine\Graphics\Camera\Camera.h">
       <Filter>Header\Engine\Graphics\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Timer\Timer.h">
+      <Filter>Header\Engine\Timer</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -193,6 +199,12 @@
     </Filter>
     <Filter Include="Source\Engine\Graphics\Camera">
       <UniqueIdentifier>{2dc2e948-292f-4439-99ab-ffbf8071b3b4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header\Engine\Timer">
+      <UniqueIdentifier>{3266866b-ddaf-4823-85c0-50f9e7bbf6d6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Engine\Timer">
+      <UniqueIdentifier>{16c5a756-7d33-4092-96ad-e9afde88d75b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

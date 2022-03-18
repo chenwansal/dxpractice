@@ -2,6 +2,7 @@
 #include "Graphics/Graphics.h"
 #include "Keyboard/KeyboardDevice.h"
 #include "Mouse/MouseDevice.h"
+#include "Timer/Timer.h"
 #include "Window/RenderWindow.h"
 #include "WindowInterface/IWindowContainer.h"
 
@@ -20,4 +21,5 @@ class WindowContainer : IWindowContainer {
     MouseDevice mouse;
     Graphics gfx;
     RenderWindow renderWindow;
+    Timer timer;
 };

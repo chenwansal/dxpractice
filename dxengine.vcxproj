@@ -150,6 +150,7 @@
     <ClCompile Include="Engine\EngineCore.cpp" />
     <ClCompile Include="Engine\Graphics\Adapter\GraphicAdapterReader.cpp" />
     <ClCompile Include="Engine\Graphics\Camera\Camera.cpp" />
+    <ClCompile Include="Engine\Timer\Timer.cpp" />
     <ClCompile Include="Engine\Keyboard\KeyboardDevice.cpp" />
     <ClCompile Include="Engine\Logger\PLogger.cpp" />
     <ClCompile Include="Engine\Keyboard\KeyboardEvent.cpp" />
@@ -170,6 +171,7 @@
     <ClInclude Include="Engine\Graphics\Shader\ConstantBufferTypes.h" />
     <ClInclude Include="Engine\Graphics\Adapter\GraphicAdapterReader.h" />
     <ClInclude Include="Engine\Graphics\ShaderBuffer\IndexBuffer.h" />
+    <ClInclude Include="Engine\Timer\Timer.h" />
     <ClInclude Include="Engine\Graphics\Vertex\Vertex.h" />
     <ClInclude Include="Engine\Graphics\ShaderBuffer\VertexBuffer.h" />
     <ClInclude Include="Engine\Keyboard\KeyboardDevice.h" />

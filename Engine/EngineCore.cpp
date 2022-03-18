@@ -8,7 +8,7 @@ EngineCore::~EngineCore() {
 
 bool EngineCore::Initialize(HINSTANCE hInstance, string titleName,
                             string className, int width, int height) {
-    // WINDOW
+    // WINDOW CONTAINER
     bool isInit = this->mainWindow.Initialize(hInstance, titleName, className,
                                               width, height);
 

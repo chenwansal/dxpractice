@@ -3,6 +3,8 @@
 // public instance
 bool Graphics::Initialize(HWND hwnd, int width, int height) {
 
+    this->fpsTimer.Start();
+
     this->windowWidth = width;
     this->windowHeight = height;
 
@@ -65,7 +67,8 @@ void Graphics::RenderFrame() {
 
     // Update Constant Buffer
     XMMATRIX worldMat = XMMatrixIdentity();
-    constantBuffer.data.mat = worldMat * camera.GetViewMatrix() * camera.GetProjectionMatrix();
+    constantBuffer.data.mat =
+        worldMat * camera.GetViewMatrix() * camera.GetProjectionMatrix();
     constantBuffer.data.mat = XMMatrixTranspose(constantBuffer.data.mat);
     if (!constantBuffer.ApplyChanges(this->cptrDeviceContext.Get())) {
         return;
@@ -84,15 +87,22 @@ void Graphics::RenderFrame() {
     this->cptrDeviceContext->DrawIndexed(this->indexBuffer.BufferSize(), 0, 0);
 
     // DRAW TEXT
+    static int fpsCounter = 0;
+    static string fpsString = "FPS: 0";
+    fpsCounter += 1;
+    if (fpsTimer.GetMillisecondsElapsed() > 1000.0f) {
+        fpsString = "FPS: " + to_string(fpsCounter);
+        fpsCounter = 0;
+        fpsTimer.Restart();
+    }
     uptrSpriteBatch->Begin();
-    uptrSpriteFont->DrawString(uptrSpriteBatch.get(), L"hello pig",
+    uptrSpriteFont->DrawString(uptrSpriteBatch.get(), StringConverter::StringToWide(fpsString).c_str(),
                                XMFLOAT2(0.0f, 0.0f), Colors::White, 0.0f,
                                XMFLOAT2(0.0f, 0.0f), XMFLOAT2(1.0f, 1.0f));
     uptrSpriteBatch->End();
 
     // SWAP CHAIN
     this->cptrSwapchain->Present(1, NULL); // 1 = vsync
-
 }
 
 // private instance

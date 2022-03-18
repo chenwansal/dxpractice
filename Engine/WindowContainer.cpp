@@ -2,6 +2,9 @@
 
 bool WindowContainer::Initialize(HINSTANCE hInstance, string window_title,
                                  string window_class, int width, int height) {
+    // TIMER
+    timer.Start();
+
     // KEYBOARD
     keyboard = KeyboardDevice();
     PLogger::ConsoleLog("keyboard init\r\n");
@@ -31,6 +34,10 @@ bool WindowContainer::Process() {
 }
 
 void WindowContainer::Update() {
+
+    float dt = timer.GetMillisecondsElapsed();
+    timer.Restart();
+
     while (!this->keyboard.IsKeyBufferEmpty()) {
         KeyboardEvent kbe = this->keyboard.ReadKey();
         // PLogger::ConsoleLog(kbe);
