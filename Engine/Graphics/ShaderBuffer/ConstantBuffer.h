@@ -44,12 +44,10 @@ template <class T> class ConstantBuffer {
     bool ApplyChanges(ID3D11DeviceContext *ptrDeviceContext) {
 
         D3D11_MAPPED_SUBRESOURCE mappedResource;
-        HRESULT hr = ptrDeviceContext->Map(buffer.Get(), 0,
-                                                  D3D11_MAP_WRITE_DISCARD, 0,
-                                                  &mappedResource);
+        HRESULT hr = ptrDeviceContext->Map(
+            buffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
         if (FAILED(hr)) {
-            PLogger::PopupErrorWithResult(hr,
-                                          "FAILED TO map CONSTANT BUFFER");
+            PLogger::PopupErrorWithResult(hr, "FAILED TO map CONSTANT BUFFER");
             return false;
         }
         CopyMemory(mappedResource.pData, &data, sizeof(T));

@@ -16,7 +16,7 @@ class MouseDevice {
 
     bool IsEventBufferEmpty();
     MouseEvent ReadEvent();
-    
+
     // LEFT
     void RecordLeftPressed(int x, int y);
     void RecordLeftReleased(int x, int y);

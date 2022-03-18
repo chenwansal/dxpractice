@@ -16,9 +16,6 @@
     <ClCompile Include="Engine\Window\RenderWindow.cpp">
       <Filter>Source\Engine\Window</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Window\WindowContainer.cpp">
-      <Filter>Source\Engine\Window</Filter>
-    </ClCompile>
     <ClCompile Include="Engine\Keyboard\KeyboardDevice.cpp">
       <Filter>Source\Engine\Keyboard</Filter>
     </ClCompile>
@@ -34,14 +31,17 @@
     <ClCompile Include="Engine\Graphics\Graphics.cpp">
       <Filter>Source\Engine\Graphics</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Graphics\GraphicAdapterReader.cpp">
-      <Filter>Source\Engine\Graphics</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Graphics\Shaders.cpp">
-      <Filter>Source\Engine\Graphics</Filter>
-    </ClCompile>
     <ClCompile Include="Generic\PathHelper.cpp">
       <Filter>Source\Generic</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Graphics\Adapter\GraphicAdapterReader.cpp">
+      <Filter>Source\Engine\Graphics\Adapter</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Graphics\Shader\Shaders.cpp">
+      <Filter>Source\Engine\Graphics\Shader</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\WindowContainer.cpp">
+      <Filter>Source\Engine</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -57,14 +57,8 @@
     <ClInclude Include="Engine\Window\RenderWindow.h">
       <Filter>Header\Engine\Window</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Window\WindowContainer.h">
-      <Filter>Header\Engine\Window</Filter>
-    </ClInclude>
     <ClInclude Include="Engine\Keyboard\KeyboardDevice.h">
       <Filter>Header\Engine\Keyboard</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Window\IWindowContainer.h">
-      <Filter>Header\Engine\Window</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Keyboard\KeyboardEvent.h">
       <Filter>Header\Engine\Keyboard</Filter>
@@ -78,29 +72,35 @@
     <ClInclude Include="Engine\Graphics\Graphics.h">
       <Filter>Header\Engine\Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Graphics\Vertex.h">
-      <Filter>Header\Engine\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Graphics\GraphicAdapterReader.h">
-      <Filter>Header\Engine\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Graphics\Shaders.h">
-      <Filter>Header\Engine\Graphics</Filter>
-    </ClInclude>
     <ClInclude Include="Generic\PathHelper.h">
       <Filter>Header\Generic</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Graphics\VertexBuffer.h">
-      <Filter>Header\Engine\Graphics</Filter>
+    <ClInclude Include="Engine\Graphics\Vertex\Vertex.h">
+      <Filter>Header\Engine\Graphics\Vertex</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Graphics\IndexBuffer.h">
-      <Filter>Header\Engine\Graphics</Filter>
+    <ClInclude Include="Engine\Graphics\Shader\Shaders.h">
+      <Filter>Header\Engine\Graphics\Shader</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Graphics\ConstantBufferTypes.h">
-      <Filter>Header\Engine\Graphics</Filter>
+    <ClInclude Include="Engine\Graphics\Shader\ConstantBufferTypes.h">
+      <Filter>Header\Engine\Graphics\Shader</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Graphics\ConstantBuffer.h">
-      <Filter>Header\Engine\Graphics</Filter>
+    <ClInclude Include="Engine\Graphics\ShaderBuffer\ConstantBuffer.h">
+      <Filter>Header\Engine\Graphics\ShaderBuffer</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Graphics\ShaderBuffer\IndexBuffer.h">
+      <Filter>Header\Engine\Graphics\ShaderBuffer</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Graphics\ShaderBuffer\VertexBuffer.h">
+      <Filter>Header\Engine\Graphics\ShaderBuffer</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Graphics\Adapter\GraphicAdapterReader.h">
+      <Filter>Header\Engine\Graphics\Adapter</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\WindowContainer.h">
+      <Filter>Header\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\WindowInterface\IWindowContainer.h">
+      <Filter>Header\Engine\WindowInterface</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -160,6 +160,30 @@
     </Filter>
     <Filter Include="Source\Generic">
       <UniqueIdentifier>{684bb9f2-39ca-41a9-a0a9-85784c52d915}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header\Engine\Graphics\Camera">
+      <UniqueIdentifier>{238f1d55-5980-484b-b6b9-6591ad76442c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header\Engine\Graphics\Shader">
+      <UniqueIdentifier>{84c683b5-2451-4016-b391-bf3a24257bd7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header\Engine\Graphics\Vertex">
+      <UniqueIdentifier>{aba5243a-cfe8-42fd-bcd3-56a79dc375ba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header\Engine\Graphics\ShaderBuffer">
+      <UniqueIdentifier>{dfa13328-df01-4f9a-bf96-6a17387812cd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header\Engine\Graphics\Adapter">
+      <UniqueIdentifier>{445a88a8-565d-4f3b-a86e-d3bcb9c58f65}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Engine\Graphics\Adapter">
+      <UniqueIdentifier>{c3004a7e-da22-47c5-a415-9921b2ff0fe6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Engine\Graphics\Shader">
+      <UniqueIdentifier>{ade1533e-a7c2-4c48-94b7-10a6222e1e04}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header\Engine\WindowInterface">
+      <UniqueIdentifier>{ec04b2f8-26da-43aa-9a5b-da0a51706247}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

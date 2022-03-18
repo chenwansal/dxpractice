@@ -1,6 +1,6 @@
 #pragma once
-#include <queue>
 #include "KeyboardEvent.h"
+#include <queue>
 using namespace std;
 
 class KeyboardDevice {
@@ -12,7 +12,7 @@ class KeyboardDevice {
     void RecordKeyPressed(const unsigned char key);
     void RecordKeyReleased(const unsigned char key);
     void RecordChar(const unsigned char key);
-    
+
   private:
     bool keyStatus[256];
     queue<KeyboardEvent> keyEventBufferQueue;

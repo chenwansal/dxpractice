@@ -1,15 +1,14 @@
 #pragma once
-#include "../Keyboard/KeyboardDevice.h"
-#include "../Mouse/MouseDevice.h"
-#include "./RenderWindow.h"
-#include "IWindowContainer.h"
-#include "../Graphics/Graphics.h"
+#include "Graphics/Graphics.h"
+#include "Keyboard/KeyboardDevice.h"
+#include "Mouse/MouseDevice.h"
+#include "Window/RenderWindow.h"
+#include "WindowInterface/IWindowContainer.h"
 
 class WindowContainer : IWindowContainer {
   public:
-    bool Initialize(HINSTANCE hInstance,
-                    string window_title, string window_class, int width,
-                    int height);
+    bool Initialize(HINSTANCE hInstance, string window_title,
+                    string window_class, int width, int height);
     bool Process();
     void Update();
     void RenderFrame();

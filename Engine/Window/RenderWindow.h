@@ -1,6 +1,6 @@
 #pragma once
 #include "../Logger/PLogger.h"
-#include "IWindowContainer.h"
+#include "../WindowInterface/IWindowContainer.h"
 
 class RenderWindow {
   public:
@@ -28,6 +28,6 @@ class RenderWindow {
     void RegisterWindowClass();
     static LRESULT CALLBACK OnWindowProc(HWND hwnd, UINT msg, WPARAM wParam,
                                          LPARAM lParam);
-    static LRESULT CALLBACK HandleMsgRedirect(HWND hwnd, UINT msg, WPARAM wParam,
-                                       LPARAM lParam);
+    static LRESULT CALLBACK HandleMsgRedirect(HWND hwnd, UINT msg,
+                                              WPARAM wParam, LPARAM lParam);
 };

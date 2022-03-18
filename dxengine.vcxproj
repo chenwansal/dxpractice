@@ -148,7 +148,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Engine\EngineCore.cpp" />
-    <ClCompile Include="Engine\Graphics\GraphicAdapterReader.cpp" />
+    <ClCompile Include="Engine\Graphics\Adapter\GraphicAdapterReader.cpp" />
     <ClCompile Include="Engine\Keyboard\KeyboardDevice.cpp" />
     <ClCompile Include="Engine\Logger\PLogger.cpp" />
     <ClCompile Include="Engine\Keyboard\KeyboardEvent.cpp" />
@@ -157,30 +157,30 @@
     <ClCompile Include="Engine\Graphics\Graphics.cpp" />
     <ClCompile Include="Engine\Window\RenderWindow.cpp" />
     <ClCompile Include="Engine\Base\StringConverter.cpp" />
-    <ClCompile Include="Engine\Window\WindowContainer.cpp" />
-    <ClCompile Include="Engine\Graphics\Shaders.cpp" />
+    <ClCompile Include="Engine\WindowContainer.cpp" />
+    <ClCompile Include="Engine\Graphics\Shader\Shaders.cpp" />
     <ClCompile Include="WinMain.cpp" />
     <ClCompile Include="Generic\PathHelper.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\EngineCore.h" />
-    <ClInclude Include="Engine\Graphics\ConstantBuffer.h" />
-    <ClInclude Include="Engine\Graphics\ConstantBufferTypes.h" />
-    <ClInclude Include="Engine\Graphics\GraphicAdapterReader.h" />
-    <ClInclude Include="Engine\Graphics\IndexBuffer.h" />
-    <ClInclude Include="Engine\Graphics\Vertex.h" />
-    <ClInclude Include="Engine\Graphics\VertexBuffer.h" />
+    <ClInclude Include="Engine\Graphics\ShaderBuffer\ConstantBuffer.h" />
+    <ClInclude Include="Engine\Graphics\Shader\ConstantBufferTypes.h" />
+    <ClInclude Include="Engine\Graphics\Adapter\GraphicAdapterReader.h" />
+    <ClInclude Include="Engine\Graphics\ShaderBuffer\IndexBuffer.h" />
+    <ClInclude Include="Engine\Graphics\Vertex\Vertex.h" />
+    <ClInclude Include="Engine\Graphics\ShaderBuffer\VertexBuffer.h" />
     <ClInclude Include="Engine\Keyboard\KeyboardDevice.h" />
     <ClInclude Include="Engine\Mouse\MouseDevice.h" />
     <ClInclude Include="Engine\Mouse\MouseEvent.h" />
     <ClInclude Include="Engine\Graphics\Graphics.h" />
-    <ClInclude Include="Engine\Window\IWindowContainer.h" />
+    <ClInclude Include="Engine\WindowInterface\IWindowContainer.h" />
     <ClInclude Include="Engine\Keyboard\KeyboardEvent.h" />
     <ClInclude Include="Engine\Window\RenderWindow.h" />
     <ClInclude Include="Engine\Base\StringConverter.h" />
     <ClInclude Include="Engine\Logger\PLogger.h" />
-    <ClInclude Include="Engine\Window\WindowContainer.h" />
-    <ClInclude Include="Engine\Graphics\Shaders.h" />
+    <ClInclude Include="Engine\WindowContainer.h" />
+    <ClInclude Include="Engine\Graphics\Shader\Shaders.h" />
     <ClInclude Include="Generic\PathHelper.h" />
   </ItemGroup>
   <ItemGroup>

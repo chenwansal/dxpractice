@@ -25,7 +25,7 @@ class IndexBuffer {
     ID3D11Buffer *const *GetAddressOf() const {
         return buffer.GetAddressOf();
     }
-    
+
     UINT BufferSize() const {
         return this->bufferSize;
     }
@@ -43,9 +43,8 @@ class IndexBuffer {
 
         D3D11_SUBRESOURCE_DATA indexBufferData;
         indexBufferData.pSysMem = data;
-        HRESULT hr = device->CreateBuffer(
-            &indexBufferDesc, &indexBufferData,
-            this->buffer.GetAddressOf());
+        HRESULT hr = device->CreateBuffer(&indexBufferDesc, &indexBufferData,
+                                          this->buffer.GetAddressOf());
         return hr;
     }
 };
