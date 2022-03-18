@@ -74,7 +74,9 @@ void Graphics::RenderFrame() {
     UINT offset = 0;
 
     // Update Constant Buffer
-    XMMATRIX worldMat = XMMatrixIdentity();
+    static float translationOffset[3] = {0, 0, 0};
+    XMMATRIX worldMat = XMMatrixTranslation(
+        translationOffset[0], translationOffset[1], translationOffset[2]);
     constantBuffer.data.mat =
         worldMat * camera.GetViewMatrix() * camera.GetProjectionMatrix();
     constantBuffer.data.mat = XMMatrixTranspose(constantBuffer.data.mat);
@@ -110,10 +112,19 @@ void Graphics::RenderFrame() {
     uptrSpriteBatch->End();
 
     // IMGUI
+    static int count = 0;
     ImGui_ImplDX11_NewFrame();
     ImGui_ImplWin32_NewFrame();
     ImGui::NewFrame();
     ImGui::Begin("Test");
+    if (ImGui::Button("Reset")) {
+        translationOffset[0] = 0;
+        translationOffset[1] = 0;
+        translationOffset[2] = 0;
+    }
+    ImGui::DragFloat3("Translation xyz", translationOffset, 0.01f);
+    ImGui::SameLine();
+    ImGui::Text(to_string(count).c_str());
     ImGui::End();
     ImGui::Render();
     ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());

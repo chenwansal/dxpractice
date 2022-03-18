@@ -37,8 +37,14 @@ template <class T> class VertexBuffer {
 
     HRESULT Initialize(ID3D11Device *device, T *data, UINT numVertices) {
 
+        if (buffer != nullptr) {
+            buffer.Reset();
+        }
+
         this->bufferSize = numVertices;
-        this->stride = make_unique<UINT>(sizeof(T));
+        if (stride.get() == nullptr) {
+            this->stride = make_unique<UINT>(sizeof(T));
+        }
 
         D3D11_BUFFER_DESC vertexBufferDesc;
         ZeroMemory(&vertexBufferDesc, sizeof(D3D11_BUFFER_DESC));

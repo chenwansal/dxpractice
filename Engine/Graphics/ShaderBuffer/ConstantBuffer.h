@@ -29,6 +29,10 @@ template <class T> class ConstantBuffer {
 
     HRESULT Initialize(ID3D11Device *ptrDevice) {
 
+        if (buffer != nullptr) {
+            buffer.Reset();
+        }
+
         D3D11_BUFFER_DESC desc;
         desc.Usage = D3D11_USAGE_DYNAMIC;
         desc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
