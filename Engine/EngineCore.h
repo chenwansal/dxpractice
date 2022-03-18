@@ -1,6 +1,6 @@
 #pragma once
 #include "Window/RenderWindow.h"
-#include "Window/WindowContainer.h"
+#include "WindowContainer.h"
 #include "Graphics/Graphics.h"
 #include "Keyboard/KeyboardDevice.h"
 #include "Mouse/MouseDevice.h"

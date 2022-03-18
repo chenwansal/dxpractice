@@ -1,5 +1,5 @@
 #pragma once
-#include "../Logger/PLogger.h"
+#include "../../Logger/PLogger.h"
 #pragma comment(lib, "D3DCompiler.lib")
 #include <d3d11.h>
 #include <wrl/client.h>

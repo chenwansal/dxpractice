@@ -1,7 +1,6 @@
 #ifndef ConstantBuffer_h__
 #define ConstantBuffer_h__
-#include "../Logger/PLogger.h"
-#include "ConstantBufferTypes.h"
+#include "../../Logger/PLogger.h"
 #include <d3d11.h>
 #include <wrl/client.h>
 using namespace std;
