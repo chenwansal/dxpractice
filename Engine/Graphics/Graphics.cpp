@@ -3,7 +3,10 @@
 // public instance
 bool Graphics::Initialize(HWND hwnd, int width, int height) {
 
-    if (!InitializeDirectX(hwnd, width, height)) {
+    this->windowWidth = width;
+    this->windowHeight = height;
+
+    if (!InitializeDirectX(hwnd)) {
         return false;
     }
 
@@ -93,7 +96,7 @@ void Graphics::RenderFrame() {
 }
 
 // private instance
-bool Graphics::InitializeDirectX(HWND hwnd, int width, int height) {
+bool Graphics::InitializeDirectX(HWND hwnd) {
 
     // DEVICE AND SWAPCHAIN
     vector<GraphicAdapterData> adapters =
@@ -107,8 +110,8 @@ bool Graphics::InitializeDirectX(HWND hwnd, int width, int height) {
     DXGI_SWAP_CHAIN_DESC scd;
     ZeroMemory(&scd, sizeof(DXGI_SWAP_CHAIN_DESC));
 
-    scd.BufferDesc.Width = width;
-    scd.BufferDesc.Height = height;
+    scd.BufferDesc.Width = this->windowWidth;
+    scd.BufferDesc.Height = this->windowHeight;
     scd.BufferDesc.RefreshRate.Numerator = 60;
     scd.BufferDesc.RefreshRate.Denominator = 1;
     scd.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
@@ -159,8 +162,8 @@ bool Graphics::InitializeDirectX(HWND hwnd, int width, int height) {
 
     // Describe: Depth/Stencil Buffer
     D3D11_TEXTURE2D_DESC textureDesc;
-    textureDesc.Width = width;
-    textureDesc.Height = height;
+    textureDesc.Width = this->windowWidth;
+    textureDesc.Height = this->windowHeight;
     textureDesc.MipLevels = 1;
     textureDesc.ArraySize = 1;
     textureDesc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
@@ -216,8 +219,8 @@ bool Graphics::InitializeDirectX(HWND hwnd, int width, int height) {
 
     viewport.TopLeftX = 0;
     viewport.TopLeftY = 0;
-    viewport.Width = (float)width;
-    viewport.Height = (float)height;
+    viewport.Width = (float)windowWidth;
+    viewport.Height = (float)windowHeight;
     viewport.MinDepth = 0.0f;
     viewport.MaxDepth = 1.0f;
 

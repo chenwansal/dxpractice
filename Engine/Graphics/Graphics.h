@@ -17,6 +17,9 @@ class Graphics {
     void RenderFrame();
 
   private:
+    int windowWidth;
+    int windowHeight;
+
     ComPtr<ID3D11Device> cptrDevice;
     ComPtr<ID3D11DeviceContext> cptrDeviceContext;
     ComPtr<IDXGISwapChain> cptrSwapchain;
@@ -42,7 +45,7 @@ class Graphics {
     ComPtr<ID3D11SamplerState> cptrSamplerState;
     ComPtr<ID3D11ShaderResourceView> cptrMyTexture;
 
-    bool InitializeDirectX(HWND hwnd, int width, int height);
+    bool InitializeDirectX(HWND hwnd);
     bool InitializeShaders();
     bool InitializeScene();
 };
