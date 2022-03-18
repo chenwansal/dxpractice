@@ -43,6 +43,9 @@
     <ClCompile Include="Engine\WindowContainer.cpp">
       <Filter>Source\Engine</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\Graphics\Camera\Camera.cpp">
+      <Filter>Source\Engine\Graphics\Camera</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\EngineCore.h">
@@ -101,6 +104,9 @@
     </ClInclude>
     <ClInclude Include="Engine\WindowInterface\IWindowContainer.h">
       <Filter>Header\Engine\WindowInterface</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Graphics\Camera\Camera.h">
+      <Filter>Header\Engine\Graphics\Camera</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -184,6 +190,9 @@
     </Filter>
     <Filter Include="Header\Engine\WindowInterface">
       <UniqueIdentifier>{ec04b2f8-26da-43aa-9a5b-da0a51706247}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Engine\Graphics\Camera">
+      <UniqueIdentifier>{2dc2e948-292f-4439-99ab-ffbf8071b3b4}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

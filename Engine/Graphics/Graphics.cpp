@@ -65,27 +65,7 @@ void Graphics::RenderFrame() {
 
     // Update Constant Buffer
     XMMATRIX worldMat = XMMatrixIdentity();
-
-    static XMVECTOR eyePos = XMVectorSet(0.0f, -4.0f, -2.0f, 0.0f);
-    XMFLOAT3 eyePosF3;
-    XMStoreFloat3(&eyePosF3, eyePos);
-    eyePosF3.y += 0.02f;
-    eyePos = XMLoadFloat3(&eyePosF3);
-    static XMVECTOR lookAtPos = XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f);
-    static XMVECTOR upVector = XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f);
-    XMMATRIX viewMat = XMMatrixLookAtLH(eyePos, lookAtPos, upVector);
-
-    float fovDegrees = 90.0f;
-    float fovRadians = (fovDegrees / 360.0f) * XM_2PI;
-    float aspectRadio = static_cast<float>(this->windowWidth) / static_cast<float>(this->windowHeight);
-    float nearZ = 0.1f;
-    float farZ = 1000.0f;
-    XMMATRIX projectionMat = XMMatrixPerspectiveFovLH(fovRadians, aspectRadio, nearZ, farZ);
-
-    constantBuffer.data.mat = worldMat * viewMat * projectionMat;
-    //constantBuffer.data.mat =
-    //    XMMatrixRotationRollPitchYaw(0, 0, XM_PIDIV4);
-    //constantBuffer.data.mat = XMMatrixTranslation(0, 0.5f, 0);
+    constantBuffer.data.mat = worldMat * camera.GetViewMatrix() * camera.GetProjectionMatrix();
     constantBuffer.data.mat = XMMatrixTranspose(constantBuffer.data.mat);
     if (!constantBuffer.ApplyChanges(this->cptrDeviceContext.Get())) {
         return;
@@ -111,7 +91,8 @@ void Graphics::RenderFrame() {
     uptrSpriteBatch->End();
 
     // SWAP CHAIN
-    this->cptrSwapchain->Present(1, NULL);
+    this->cptrSwapchain->Present(1, NULL); // 1 = vsync
+
 }
 
 // private instance
@@ -351,6 +332,11 @@ bool Graphics::InitializeScene() {
         PLogger::PopupErrorWithResult(hr, "FAILED TO CREATE CONSTANT BUFFER");
         return false;
     }
+
+    camera.SetPosition(0.0f, 0.0f, -2.0f);
+    float aspectRadio =
+        static_cast<float>(windowWidth) / static_cast<float>(windowHeight);
+    camera.SetProjectionValues(90.0f, aspectRadio, 0.1f, 1000.0f);
 
     return true;
 }

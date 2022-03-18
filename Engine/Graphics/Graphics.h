@@ -1,5 +1,6 @@
 #pragma once
 #include "../../Generic/PathHelper.h"
+#include "Camera/Camera.h"
 #include "Adapter/GraphicAdapterReader.h"
 #include "Shader/ConstantBufferTypes.h"
 #include "Shader/Shaders.h"
@@ -14,6 +15,8 @@
 
 class Graphics {
   public:
+    Camera camera;
+
     bool Initialize(HWND hwnd, int width, int height);
     void RenderFrame();
 
