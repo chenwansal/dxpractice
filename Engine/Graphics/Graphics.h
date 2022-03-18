@@ -13,6 +13,9 @@
 #include <SpriteFont.h>
 #include <WICTextureLoader.h>
 #include <d3d11.h>
+#include "../ImGUI/imgui.h"
+#include "../ImGUI/imgui_impl_win32.h"
+#include "../ImGUI/imgui_impl_dx11.h"
 
 class Graphics {
   public:

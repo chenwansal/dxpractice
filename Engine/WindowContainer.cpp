@@ -53,8 +53,15 @@ void WindowContainer::RenderFrame() {
     this->gfx.RenderFrame();
 }
 
+extern LRESULT ImGui_ImplWin32_WndProcHandler(HWND hwnd, UINT msg,
+                                              WPARAM wParam, LPARAM lParam);
 LRESULT CALLBACK WindowContainer::OnWindowProc(HWND hwnd, UINT msg,
                                                WPARAM wParam, LPARAM lParam) {
+
+    if (ImGui_ImplWin32_WndProcHandler(hwnd, msg, wParam, lParam)) {
+        return true;
+    }
+
     switch (msg) {
     // KEYBOARD MESSAGE
     case WM_KEYDOWN: {

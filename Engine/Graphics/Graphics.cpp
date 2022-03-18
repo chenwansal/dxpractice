@@ -20,6 +20,14 @@ bool Graphics::Initialize(HWND hwnd, int width, int height) {
         return false;
     }
 
+    // IMGUI
+    IMGUI_CHECKVERSION();
+    ImGui::CreateContext();
+    ImGuiIO &io = ImGui::GetIO();
+    ImGui_ImplWin32_Init(hwnd);
+    ImGui_ImplDX11_Init(this->cptrDevice.Get(), this->cptrDeviceContext.Get());
+    ImGui::StyleColorsDark();
+
     return true;
 }
 
@@ -100,6 +108,15 @@ void Graphics::RenderFrame() {
                                XMFLOAT2(0.0f, 0.0f), Colors::White, 0.0f,
                                XMFLOAT2(0.0f, 0.0f), XMFLOAT2(1.0f, 1.0f));
     uptrSpriteBatch->End();
+
+    // IMGUI
+    ImGui_ImplDX11_NewFrame();
+    ImGui_ImplWin32_NewFrame();
+    ImGui::NewFrame();
+    ImGui::Begin("Test");
+    ImGui::End();
+    ImGui::Render();
+    ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
 
     // SWAP CHAIN
     this->cptrSwapchain->Present(1, NULL); // 1 = vsync

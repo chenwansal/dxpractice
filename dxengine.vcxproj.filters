@@ -49,6 +49,24 @@
     <ClCompile Include="Engine\Timer\Timer.cpp">
       <Filter>Source\Engine\Timer</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\ImGUI\imgui.cpp">
+      <Filter>Source\Engine\ImGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\ImGUI\imgui_draw.cpp">
+      <Filter>Source\Engine\ImGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\ImGUI\imgui_impl_dx11.cpp">
+      <Filter>Source\Engine\ImGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\ImGUI\imgui_impl_win32.cpp">
+      <Filter>Source\Engine\ImGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\ImGUI\imgui_tables.cpp">
+      <Filter>Source\Engine\ImGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\ImGUI\imgui_widgets.cpp">
+      <Filter>Source\Engine\ImGUI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\EngineCore.h">
@@ -113,6 +131,30 @@
     </ClInclude>
     <ClInclude Include="Engine\Timer\Timer.h">
       <Filter>Header\Engine\Timer</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\ImGUI\imconfig.h">
+      <Filter>Header\Engine\ImGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\ImGUI\imgui.h">
+      <Filter>Header\Engine\ImGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\ImGUI\imgui_impl_dx11.h">
+      <Filter>Header\Engine\ImGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\ImGUI\imgui_impl_win32.h">
+      <Filter>Header\Engine\ImGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\ImGUI\imgui_internal.h">
+      <Filter>Header\Engine\ImGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\ImGUI\imstb_rectpack.h">
+      <Filter>Header\Engine\ImGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\ImGUI\imstb_textedit.h">
+      <Filter>Header\Engine\ImGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\ImGUI\imstb_truetype.h">
+      <Filter>Header\Engine\ImGUI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -205,6 +247,12 @@
     </Filter>
     <Filter Include="Source\Engine\Timer">
       <UniqueIdentifier>{16c5a756-7d33-4092-96ad-e9afde88d75b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header\Engine\ImGUI">
+      <UniqueIdentifier>{ab36613e-53c6-4401-bdfd-7ef50aa09c72}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Engine\ImGUI">
+      <UniqueIdentifier>{c3efbf98-fd2e-4c42-8805-ef4cbf9d5cc0}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
