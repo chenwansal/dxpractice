@@ -192,31 +192,18 @@ bool Graphics::InitializeDirectX(HWND hwnd) {
         D3D11_SDK_VERSION, &scd, this->cptrSwapchain.GetAddressOf(),
         this->cptrDevice.GetAddressOf(), NULL,
         this->cptrDeviceContext.GetAddressOf());
-
-    if (FAILED(hr)) {
-        PLogger::PopupErrorWithResult(hr,
-                                      "FAILED CREATE DEVICE AND SWAP CHAIN");
-        return false;
-    }
+    COM_ERROR_IF_FAILED(hr, L"FAILED CREATE DEVICE AND SWAP CHAIN");
 
     ComPtr<ID3D11Texture2D> backBuffer;
     hr = this->cptrSwapchain->GetBuffer(
         0, __uuidof(ID3D11Texture2D),
         reinterpret_cast<void **>(backBuffer.GetAddressOf()));
-
-    if (FAILED(hr)) {
-        PLogger::PopupErrorWithResult(hr, "GETBUFFER FAILED");
-        return false;
-    }
+    COM_ERROR_IF_FAILED(hr, L"GETBUFFER FAILED");
 
     // RENDER TARGET VIEW
     hr = this->cptrDevice->CreateRenderTargetView(
         backBuffer.Get(), NULL, this->cptrRenderTargetView.GetAddressOf());
-
-    if (FAILED(hr)) {
-        PLogger::PopupErrorWithResult(hr, "FAILED CERATE RENDER TARGET");
-        return false;
-    }
+    COM_ERROR_IF_FAILED(hr, L"FAILED CERATE RENDER TARGET");
 
     // Describe: Depth/Stencil Buffer
     D3D11_TEXTURE2D_DESC textureDesc;
@@ -235,19 +222,13 @@ bool Graphics::InitializeDirectX(HWND hwnd) {
     // CREATE TEXTURE2D
     hr = this->cptrDevice->CreateTexture2D(
         &textureDesc, NULL, this->cptrDepthStencilBuffer.GetAddressOf());
-    if (FAILED(hr)) {
-        PLogger::PopupErrorWithResult(hr, "FAILED CERATE DEPTH STENCIL BUFFER");
-        return false;
-    }
+    COM_ERROR_IF_FAILED(hr, L"FAILED CERATE DEPTH STENCIL BUFFER");
 
     // CREATE DEPTH STENCIL VIEW
     hr = this->cptrDevice->CreateDepthStencilView(
         this->cptrDepthStencilBuffer.Get(), NULL,
         this->cptrDepthStencilView.GetAddressOf());
-    if (FAILED(hr)) {
-        PLogger::PopupErrorWithResult(hr, "FAILED CERATE DEPTH STENCIL VIEW");
-        return false;
-    }
+    COM_ERROR_IF_FAILED(hr, L"FAILED CERATE DEPTH STENCIL VIEW");
 
     // SET OUTPUT MERGER
     this->cptrDeviceContext->OMSetRenderTargets(
@@ -266,10 +247,7 @@ bool Graphics::InitializeDirectX(HWND hwnd) {
 
     hr = this->cptrDevice->CreateDepthStencilState(
         &depthStencilDesc, this->cptrDepthStencilState.GetAddressOf());
-    if (FAILED(hr)) {
-        PLogger::PopupErrorWithResult(hr, "FAILED CERATE DEPTH STENCIL STATE");
-        return false;
-    }
+    COM_ERROR_IF_FAILED(hr, L"FAILED CERATE DEPTH STENCIL STATE");
 
     // CREATE VIEWPORT
     D3D11_VIEWPORT viewport;
@@ -292,10 +270,7 @@ bool Graphics::InitializeDirectX(HWND hwnd) {
     rasterizerDesc.CullMode = D3D11_CULL_MODE::D3D11_CULL_NONE;
     hr = this->cptrDevice->CreateRasterizerState(
         &rasterizerDesc, this->cptrRasterizerState.GetAddressOf());
-    if (FAILED(hr)) {
-        PLogger::PopupErrorWithResult(hr, "FAILED TO CREATE RASTERIZER STATE");
-        return false;
-    }
+    COM_ERROR_IF_FAILED(hr, L"FAILED TO CREATE RASTERIZER STATE");
 
     // Create Blend State
     D3D11_BLEND_DESC blendDesc;
@@ -318,10 +293,7 @@ bool Graphics::InitializeDirectX(HWND hwnd) {
 
     hr = this->cptrDevice->CreateBlendState(
         &blendDesc, this->cptrBlendstate.GetAddressOf());
-    if (FAILED(hr)) {
-        PLogger::PopupErrorWithResult(hr, "FALED TO CREATE BLEND STATE");
-        return false;
-    }
+    COM_ERROR_IF_FAILED(hr, L"FALED TO CREATE BLEND STATE");
 
     // SET FONTS
     uptrSpriteBatch = make_unique<SpriteBatch>(this->cptrDeviceContext.Get());
@@ -341,10 +313,7 @@ bool Graphics::InitializeDirectX(HWND hwnd) {
 
     hr = this->cptrDevice->CreateSamplerState(
         &samplerDesc, this->cptrSamplerState.GetAddressOf());
-    if (FAILED(hr)) {
-        PLogger::PopupErrorWithResult(hr, "Failed To Create Sampler State");
-        return false;
-    }
+    COM_ERROR_IF_FAILED(hr, L"Failed To Create Sampler State");
 
     return true;
 }
@@ -390,10 +359,7 @@ bool Graphics::InitializeScene() {
     // Load Vertex Buffer
     HRESULT hr =
         this->vertexBuffer.Initialize(this->cptrDevice.Get(), v, ARRAYSIZE(v));
-    if (FAILED(hr)) {
-        PLogger::PopupErrorWithResult(hr, "FAILED TO CREATE BUFFER");
-        return false;
-    }
+    COM_ERROR_IF_FAILED(hr, L"FAILED TO CREATE BUFFER");
 
     // Load Index Data
     DWORD indices[] = {
@@ -413,32 +379,20 @@ bool Graphics::InitializeScene() {
 
     hr = this->indexBuffer.Initialize(this->cptrDevice.Get(), indices,
                                       ARRAYSIZE(indices));
-    if (FAILED(hr)) {
-        PLogger::PopupErrorWithResult(hr, "FAILED TO INDICES BUFFER");
-        return false;
-    }
+    COM_ERROR_IF_FAILED(hr, L"FAILED TO INDICES BUFFER");
 
     // Load Texture
     hr = CreateWICTextureFromFile(this->cptrDevice.Get(),
                                   L"Data/Textures/Stone1.png", nullptr,
                                   this->cptrPinkTexture.GetAddressOf());
-    if (FAILED(hr)) {
-        PLogger::PopupErrorWithResult(hr, "FAILED TO CREATE WIC Texture");
-        return false;
-    }
+    COM_ERROR_IF_FAILED(hr, L"FAILED TO CREATE WIC Texture");
 
     // Initialize Constant Buffer
     hr = this->cb_vs_vertexshaderBuffer.Initialize(this->cptrDevice.Get());
-    if (FAILED(hr)) {
-        PLogger::PopupErrorWithResult(hr, "FAILED TO CREATE CONSTANT BUFFER");
-        return false;
-    }
+    COM_ERROR_IF_FAILED(hr, L"FAILED TO CREATE CONSTANT BUFFER");
 
     hr = this->cb_ps_pixelshaderBuffer.Initialize(this->cptrDevice.Get());
-    if (FAILED(hr)) {
-        PLogger::PopupErrorWithResult(hr, "FAILED TO CREATE CONSTANT BUFFER");
-        return false;
-    }
+    COM_ERROR_IF_FAILED(hr, L"FAILED TO CREATE CONSTANT BUFFER");
 
     camera.SetPosition(0.0f, 0.0f, -2.0f);
     float aspectRadio =

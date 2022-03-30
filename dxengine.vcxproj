@@ -172,6 +172,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\EngineCore.h" />
+    <ClInclude Include="Engine\Exception\COMException.h" />
     <ClInclude Include="Engine\Graphics\Camera\Camera.h" />
     <ClInclude Include="Engine\Graphics\ShaderBuffer\ConstantBuffer.h" />
     <ClInclude Include="Engine\Graphics\Shader\ConstantBufferTypes.h" />

@@ -21,3 +21,8 @@ void PLogger::PopupErrorWithResult(HRESULT hr, wstring message) {
                             error.ErrorMessage();
     MessageBoxW(NULL, error_message.c_str(), L"Error", MB_ICONERROR);
 }
+
+void PLogger::PopupException(COMException &ex) {
+    wstring error_message = ex.what();
+    MessageBoxW(NULL, error_message.c_str(), L"Error", MB_ICONERROR);
+}

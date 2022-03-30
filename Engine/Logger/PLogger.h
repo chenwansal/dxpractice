@@ -1,5 +1,6 @@
 #pragma once
 #include "../Base/StringConverter.h"
+#include "../Exception/COMException.h"
 #include <Windows.h>
 
 class PLogger {
@@ -8,4 +9,5 @@ class PLogger {
     static void PopupError(string message);
     static void PopupErrorWithResult(HRESULT hr, string message);
     static void PopupErrorWithResult(HRESULT hr, wstring message);
+    static void PopupException(COMException &ex);
 };

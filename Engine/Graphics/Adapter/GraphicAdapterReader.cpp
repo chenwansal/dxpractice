@@ -13,10 +13,7 @@ vector<GraphicAdapterData> GraphicAdapterReader::GetAdapterDatas() {
     HRESULT hr =
         CreateDXGIFactory(__uuidof(IDXGIFactory),
                           reinterpret_cast<void **>(ptrFactory.GetAddressOf()));
-    if (FAILED(hr)) {
-        PLogger::PopupErrorWithResult(hr, "Failed to create DXGIFactory");
-        exit(-1);
-    }
+    COM_ERROR_IF_FAILED(hr, L"Failed to create DXGIFactory");
 
     IDXGIAdapter *ptrAdapter;
     UINT index = 0;
@@ -30,8 +27,5 @@ vector<GraphicAdapterData> GraphicAdapterReader::GetAdapterDatas() {
 GraphicAdapterData::GraphicAdapterData(IDXGIAdapter *ptrAdapter) {
     this->ptrAdapter = ptrAdapter;
     HRESULT hr = ptrAdapter->GetDesc(&this->desc);
-    if (FAILED(hr)) {
-        PLogger::PopupErrorWithResult(hr,
-                                      "Failed to Get Desc for IDXGIAdapter");
-    }
+    COM_ERROR_IF_FAILED(hr, L"Failed to Get Desc for IDXGIAdapter");
 }

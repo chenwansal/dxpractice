@@ -156,6 +156,7 @@
     <ClInclude Include="Engine\ImGUI\imstb_truetype.h">
       <Filter>Header\Engine\ImGUI</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\Exception\COMException.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Header">

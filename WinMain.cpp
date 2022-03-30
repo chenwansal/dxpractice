@@ -11,13 +11,16 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     }
 
     EngineCore engine;
-    if (engine.Initialize(hInstance, "myTitle", "myClass", 800, 800)) {
-        while (engine.Process()) {
-            engine.Update();
-            engine.RenderFrame();
+    try {
+        if (engine.Initialize(hInstance, "myTitle", "myClass", 800, 800)) {
+            while (engine.Process()) {
+                engine.Update();
+                engine.RenderFrame();
+            }
         }
+    } catch (COMException &ex) {
+        PLogger::PopupException(ex);
     }
-
     return 0;
 }
 
