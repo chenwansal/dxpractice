@@ -59,6 +59,10 @@ void Graphics::RenderFrame() {
     this->cptrDeviceContext->OMSetDepthStencilState(
         this->cptrDepthStencilState.Get(), 0);
 
+    // SET BLEND STATE
+    this->cptrDeviceContext->OMSetBlendState(this->cptrBlendstate.Get(), NULL,
+                                             0xFFFFFFFF);
+
     // SET PS Sampler
     this->cptrDeviceContext->PSSetSamplers(
         0, 1, this->cptrSamplerState.GetAddressOf());
@@ -73,18 +77,26 @@ void Graphics::RenderFrame() {
     // AND DRAW
     UINT offset = 0;
 
-    // Update Constant Buffer
+    // ==== Update Constant Buffer ====
+    // - VS CONSTANT BUFFER
     static float translationOffset[3] = {0, 0, 0};
     XMMATRIX worldMat = XMMatrixTranslation(
         translationOffset[0], translationOffset[1], translationOffset[2]);
-    constantBuffer.data.mat =
+    cb_vs_vertexshaderBuffer.data.mat =
         worldMat * camera.GetViewMatrix() * camera.GetProjectionMatrix();
-    constantBuffer.data.mat = XMMatrixTranspose(constantBuffer.data.mat);
-    if (!constantBuffer.ApplyChanges(this->cptrDeviceContext.Get())) {
+    cb_vs_vertexshaderBuffer.data.mat =
+        XMMatrixTranspose(cb_vs_vertexshaderBuffer.data.mat);
+    if (!cb_vs_vertexshaderBuffer.ApplyChanges(this->cptrDeviceContext.Get())) {
         return;
     }
     this->cptrDeviceContext->VSSetConstantBuffers(
-        0, 1, constantBuffer.GetAddressOf());
+        0, 1, cb_vs_vertexshaderBuffer.GetAddressOf());
+
+    // - PS CONSTANT BUFFER
+    this->cb_ps_pixelshaderBuffer.data.alpha = 0.1f;
+    this->cb_ps_pixelshaderBuffer.ApplyChanges(this->cptrDeviceContext.Get());
+    this->cptrDeviceContext->PSSetConstantBuffers(
+        0, 1, this->cb_ps_pixelshaderBuffer.GetAddressOf());
 
     // DRAW SQUARE
     this->cptrDeviceContext->PSSetShaderResources(
@@ -106,7 +118,8 @@ void Graphics::RenderFrame() {
         fpsTimer.Restart();
     }
     uptrSpriteBatch->Begin();
-    uptrSpriteFont->DrawString(uptrSpriteBatch.get(), StringConverter::StringToWide(fpsString).c_str(),
+    uptrSpriteFont->DrawString(uptrSpriteBatch.get(),
+                               StringConverter::StringToWide(fpsString).c_str(),
                                XMFLOAT2(0.0f, 0.0f), Colors::White, 0.0f,
                                XMFLOAT2(0.0f, 0.0f), XMFLOAT2(1.0f, 1.0f));
     uptrSpriteBatch->End();
@@ -277,6 +290,32 @@ bool Graphics::InitializeDirectX(HWND hwnd) {
         return false;
     }
 
+    // Create Blend State
+    D3D11_BLEND_DESC blendDesc;
+    ZeroMemory(&blendDesc, sizeof(blendDesc));
+
+    D3D11_RENDER_TARGET_BLEND_DESC rtbd;
+    ZeroMemory(&rtbd, sizeof(rtbd));
+
+    rtbd.BlendEnable = true;
+    rtbd.SrcBlend = D3D11_BLEND::D3D11_BLEND_SRC_ALPHA;
+    rtbd.DestBlend = D3D11_BLEND::D3D11_BLEND_INV_SRC_ALPHA;
+    rtbd.BlendOp = D3D11_BLEND_OP::D3D11_BLEND_OP_ADD;
+    rtbd.SrcBlendAlpha = D3D11_BLEND::D3D11_BLEND_ONE;
+    rtbd.DestBlendAlpha = D3D11_BLEND::D3D11_BLEND_ZERO;
+    rtbd.BlendOpAlpha = D3D11_BLEND_OP::D3D11_BLEND_OP_ADD;
+    rtbd.RenderTargetWriteMask =
+        D3D11_COLOR_WRITE_ENABLE::D3D11_COLOR_WRITE_ENABLE_ALL;
+
+    blendDesc.RenderTarget[0] = rtbd;
+
+    hr = this->cptrDevice->CreateBlendState(
+        &blendDesc, this->cptrBlendstate.GetAddressOf());
+    if (FAILED(hr)) {
+        PLogger::PopupErrorWithResult(hr, "FALED TO CREATE BLEND STATE");
+        return false;
+    }
+
     // SET FONTS
     uptrSpriteBatch = make_unique<SpriteBatch>(this->cptrDeviceContext.Get());
     uptrSpriteFont = make_unique<SpriteFont>(
@@ -365,7 +404,13 @@ bool Graphics::InitializeScene() {
     }
 
     // Initialize Constant Buffer
-    hr = this->constantBuffer.Initialize(this->cptrDevice.Get());
+    hr = this->cb_vs_vertexshaderBuffer.Initialize(this->cptrDevice.Get());
+    if (FAILED(hr)) {
+        PLogger::PopupErrorWithResult(hr, "FAILED TO CREATE CONSTANT BUFFER");
+        return false;
+    }
+
+    hr = this->cb_ps_pixelshaderBuffer.Initialize(this->cptrDevice.Get());
     if (FAILED(hr)) {
         PLogger::PopupErrorWithResult(hr, "FAILED TO CREATE CONSTANT BUFFER");
         return false;

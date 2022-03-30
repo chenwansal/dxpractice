@@ -37,13 +37,15 @@ class Graphics {
 
     VertexBuffer<Vertex> vertexBuffer;
     IndexBuffer indexBuffer;
-    ConstantBuffer<CB_VS_vertexshader> constantBuffer;
+    ConstantBuffer<CB_VS_vertexshader> cb_vs_vertexshaderBuffer;
+    ConstantBuffer<CB_PS_pixelshader> cb_ps_pixelshaderBuffer;
 
     ComPtr<ID3D11DepthStencilView> cptrDepthStencilView;
     ComPtr<ID3D11Texture2D> cptrDepthStencilBuffer;
     ComPtr<ID3D11DepthStencilState> cptrDepthStencilState;
 
     ComPtr<ID3D11RasterizerState> cptrRasterizerState;
+    ComPtr<ID3D11BlendState> cptrBlendstate;
 
     PixelShader pixelshader;
 
