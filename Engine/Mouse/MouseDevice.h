@@ -31,6 +31,7 @@ class MouseDevice {
     void RecordWheelScrollDown(int x, int y);
     // MOVE
     void RecordMouseMove(int x, int y);
+    void RecordMouseRawMove(int x, int y);
 
   private:
     queue<MouseEvent> eventBufferQueue;

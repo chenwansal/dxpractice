@@ -1,7 +1,24 @@
 #include "WindowContainer.h"
 
+WindowContainer::WindowContainer() {
+    static bool raw_input_initialized = true;
+    if (raw_input_initialized) {
+        RAWINPUTDEVICE rid;
+        rid.usUsagePage = 0x01; // MOUSE
+        rid.usUsage = 0x02;
+        rid.dwFlags = 0;
+        rid.hwndTarget = 0;
+        if (RegisterRawInputDevices(&rid, 1, sizeof(rid)) == FALSE) {
+            PLogger::PopupErrorWithResult(
+                GetLastError(), "Failed To Register raw ipnut devices");
+            exit(-1);
+        }
+    }
+}
+
 bool WindowContainer::Initialize(HINSTANCE hInstance, string window_title,
                                  string window_class, int width, int height) {
+
     // TIMER
     timer.Start();
 
@@ -35,17 +52,50 @@ bool WindowContainer::Process() {
 
 void WindowContainer::Update() {
 
-    float dt = timer.GetMillisecondsElapsed();
+    float dt = timer.GetDeltaTime();
     timer.Restart();
 
     while (!this->keyboard.IsKeyBufferEmpty()) {
         KeyboardEvent kbe = this->keyboard.ReadKey();
-        // PLogger::ConsoleLog(kbe);
+        unsigned char keycode = kbe.GetKeyCode();
     }
 
+    const float CAMERA_ROT_SPEED = 1.0f;
+    const float CAMERA_FWD_SPEED = 0.02f;
+    const float CAMERA_MOVE_SPPED = 2.0f;
     while (!this->mouse.IsEventBufferEmpty()) {
         MouseEvent me = this->mouse.ReadEvent();
         // PLogger::ConsoleLog(me);
+        if (mouse.IsRightDown()) {
+            if (me.GetType() == MouseEvent::EventType::RAW_MOVE) {
+                MousePoint delta = me.GetPos();
+                this->gfx.camera.AdjustRotation(
+                    -(float)delta.y * CAMERA_ROT_SPEED * dt,
+                    -(float)delta.x * CAMERA_ROT_SPEED * dt, 0);
+            }
+        }
+        if (me.GetType() == MouseEvent::EventType::WheelScrollUp) {
+            this->gfx.camera.AdjustPosition(gfx.camera.GetForwardVector() *
+                                            CAMERA_FWD_SPEED * me.GetPosY() *
+                                            dt);
+        } else if (me.GetType() == MouseEvent::EventType::WheelScrollDown) {
+            this->gfx.camera.AdjustPosition(gfx.camera.GetForwardVector() *
+                                            -CAMERA_FWD_SPEED * me.GetPosY() *
+                                            dt);
+        }
+    }
+
+    if (keyboard.IsKeyPressed('W')) {
+        gfx.camera.AdjustPosition(0, -CAMERA_MOVE_SPPED * dt, 0);
+    }
+    if (keyboard.IsKeyPressed('S')) {
+        gfx.camera.AdjustPosition(0, CAMERA_MOVE_SPPED * dt, 0);
+    }
+    if (keyboard.IsKeyPressed('A')) {
+        gfx.camera.AdjustPosition(CAMERA_MOVE_SPPED * dt, 0, 0);
+    }
+    if (keyboard.IsKeyPressed('D')) {
+        gfx.camera.AdjustPosition(-CAMERA_MOVE_SPPED * dt, 0, 0);
     }
 }
 
@@ -131,6 +181,27 @@ LRESULT CALLBACK WindowContainer::OnWindowProc(HWND hwnd, UINT msg,
             this->mouse.RecordWheelScrollUp(x, y);
         } else if (offset < 0) {
             this->mouse.RecordWheelScrollDown(x, y);
+        }
+        return DefWindowProc(hwnd, msg, wParam, lParam);
+    }
+    case WM_INPUT: {
+        // NEED TO UNDERSTAND THIS PART
+        // NEED TO UNDERSTAND THIS PART
+        // NEED TO UNDERSTAND THIS PART
+        UINT dataSize = {0};
+        GetRawInputData(reinterpret_cast<HRAWINPUT>(lParam), RID_INPUT, NULL,
+                        &dataSize, sizeof(RAWINPUTHEADER));
+        if (dataSize > 0) {
+            unique_ptr<BYTE[]> rawdata = make_unique<BYTE[]>(dataSize);
+            if (GetRawInputData(reinterpret_cast<HRAWINPUT>(lParam), RID_INPUT,
+                                rawdata.get(), &dataSize,
+                                sizeof(RAWINPUTHEADER)) == dataSize) {
+                RAWINPUT *raw = reinterpret_cast<RAWINPUT *>(rawdata.get());
+                if (raw->header.dwType == RIM_TYPEMOUSE) {
+                    mouse.RecordMouseRawMove(raw->data.mouse.lLastX,
+                                             raw->data.mouse.lLastY);
+                }
+            }
         }
         return DefWindowProc(hwnd, msg, wParam, lParam);
     }

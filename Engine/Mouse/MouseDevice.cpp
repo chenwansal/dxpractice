@@ -96,3 +96,8 @@ void MouseDevice::RecordMouseMove(int x, int y) {
     MouseEvent me(MouseEvent::EventType::Move, x, y);
     this->eventBufferQueue.push(me);
 }
+
+void MouseDevice::RecordMouseRawMove(int x, int y) {
+    this->eventBufferQueue.push(
+        MouseEvent(MouseEvent::EventType::RAW_MOVE, x, y));
+}

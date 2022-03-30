@@ -8,6 +8,7 @@ class Timer {
   public:
     Timer();
     double GetMillisecondsElapsed();
+    float GetDeltaTime();
     void Restart();
     bool Stop();
     bool Start();

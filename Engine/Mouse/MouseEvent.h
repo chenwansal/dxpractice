@@ -6,6 +6,11 @@ struct MousePoint {
     int y;
 };
 
+struct MousePointF {
+    float x;
+    float y;
+};
+
 class MouseEvent {
   public:
     enum class EventType {

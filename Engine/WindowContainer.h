@@ -8,6 +8,7 @@
 
 class WindowContainer : IWindowContainer {
   public:
+    WindowContainer();
     bool Initialize(HINSTANCE hInstance, string window_title,
                     string window_class, int width, int height);
     bool Process();

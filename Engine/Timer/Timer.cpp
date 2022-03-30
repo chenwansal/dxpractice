@@ -7,12 +7,18 @@ Timer::Timer() {
 
 double Timer::GetMillisecondsElapsed() {
     if (isRunning) {
-        auto elapsed = duration<double, milli>(high_resolution_clock::now() - start);
+        auto elapsed =
+            duration<double, milli>(high_resolution_clock::now() - start);
         return elapsed.count();
     } else {
         auto elapsed = duration<double, milli>(stop - start);
         return elapsed.count();
     }
+}
+
+float Timer::GetDeltaTime() {
+    float delta = (float)this->GetMillisecondsElapsed();
+    return delta * 0.001f;
 }
 
 void Timer::Restart() {
