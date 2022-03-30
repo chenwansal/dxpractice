@@ -1,8 +1,12 @@
 #pragma once
 #include "../../Generic/PathHelper.h"
+#include "../ImGUI/imgui.h"
+#include "../ImGUI/imgui_impl_dx11.h"
+#include "../ImGUI/imgui_impl_win32.h"
 #include "../Timer/Timer.h"
 #include "Adapter/GraphicAdapterReader.h"
 #include "Camera/Camera.h"
+#include "Model/Model.h"
 #include "Shader/ConstantBufferTypes.h"
 #include "Shader/Shaders.h"
 #include "ShaderBuffer/ConstantBuffer.h"
@@ -13,13 +17,11 @@
 #include <SpriteFont.h>
 #include <WICTextureLoader.h>
 #include <d3d11.h>
-#include "../ImGUI/imgui.h"
-#include "../ImGUI/imgui_impl_win32.h"
-#include "../ImGUI/imgui_impl_dx11.h"
 
 class Graphics {
   public:
     Camera camera;
+    Model model;
 
     bool Initialize(HWND hwnd, int width, int height);
     void RenderFrame();
@@ -35,8 +37,6 @@ class Graphics {
 
     VertexShader vertexshader;
 
-    VertexBuffer<Vertex> vertexBuffer;
-    IndexBuffer indexBuffer;
     ConstantBuffer<CB_VS_vertexshader> cb_vs_vertexshaderBuffer;
     ConstantBuffer<CB_PS_pixelshader> cb_ps_pixelshaderBuffer;
 

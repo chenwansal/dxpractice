@@ -60,8 +60,7 @@ void Graphics::RenderFrame() {
         this->cptrDepthStencilState.Get(), 0);
 
     // SET BLEND STATE
-    this->cptrDeviceContext->OMSetBlendState(this->cptrBlendstate.Get(), NULL,
-                                             0xFFFFFFFF);
+    this->cptrDeviceContext->OMSetBlendState(NULL, NULL, 0xFFFFFFFF);
 
     // SET PS Sampler
     this->cptrDeviceContext->PSSetSamplers(
@@ -81,40 +80,23 @@ void Graphics::RenderFrame() {
     /* WE MUST DRAW OPAQUE FIRST */
     /* WE MUST DRAW OPAQUE FIRST */
     static float alpha = 1.0f;
+    static float translationOffset[3] = {0, 0, 0};
+    static float rotationOffset[3] = {0, 0, 0};
     { // PINK
         // ==== Update Constant Buffer ====
         // - VS CONSTANT BUFFER
-        static float translationOffset[3] = {0, 0, -0.5f};
-        XMMATRIX worldMat = XMMatrixTranslation(
+        this->model.transform.SetPosition(
             translationOffset[0], translationOffset[1], translationOffset[2]);
-        cb_vs_vertexshaderBuffer.data.mat =
-            worldMat * camera.GetViewMatrix() * camera.GetProjectionMatrix();
-        cb_vs_vertexshaderBuffer.data.mat =
-            XMMatrixTranspose(cb_vs_vertexshaderBuffer.data.mat);
-        if (!cb_vs_vertexshaderBuffer.ApplyChanges(
-                this->cptrDeviceContext.Get())) {
-            return;
-        }
-        this->cptrDeviceContext->VSSetConstantBuffers(
-            0, 1, cb_vs_vertexshaderBuffer.GetAddressOf());
+        this->model.transform.SetRotation(rotationOffset[0], rotationOffset[1],
+                                          rotationOffset[2]);
+        this->model.Draw(camera.GetViewMatrix() * camera.GetProjectionMatrix());
 
         // - PS CONSTANT BUFFER
-        this->cb_ps_pixelshaderBuffer.data.alpha = alpha;
+        this->cb_ps_pixelshaderBuffer.data.alpha = 1.0f;
         this->cb_ps_pixelshaderBuffer.ApplyChanges(
             this->cptrDeviceContext.Get());
         this->cptrDeviceContext->PSSetConstantBuffers(
             0, 1, this->cb_ps_pixelshaderBuffer.GetAddressOf());
-
-        // DRAW SQUARE
-        this->cptrDeviceContext->PSSetShaderResources(
-            0, 1, this->cptrPinkTexture.GetAddressOf());
-        this->cptrDeviceContext->IASetVertexBuffers(
-            0, 1, this->vertexBuffer.GetAddressOf(),
-            this->vertexBuffer.StridePtr(), &offset);
-        this->cptrDeviceContext->IASetIndexBuffer(this->indexBuffer.Get(),
-                                                  DXGI_FORMAT_R32_UINT, 0);
-        this->cptrDeviceContext->DrawIndexed(this->indexBuffer.BufferSize(), 0,
-                                             0);
     }
 
     // DRAW TEXT
@@ -141,9 +123,10 @@ void Graphics::RenderFrame() {
 
     ImGui::Begin("Test");
     ImGui::DragFloat("alpha", &alpha, 0.02f, 0, 1);
-    // ImGui::DragFloat3("Translation xyz", translationOffset, 0.01f);
+    ImGui::DragFloat3("Translation xyz", translationOffset, 0.01f);
+    ImGui::DragFloat3("Rotation xyz", rotationOffset, 0.01f);
     ImGui::SameLine();
-    ImGui::Text(to_string(count).c_str());
+    // ImGui::Text(to_string(count).c_str());
     ImGui::End();
 
     ImGui::Render();
@@ -339,47 +322,10 @@ bool Graphics::InitializeShaders() {
 
 bool Graphics::InitializeScene() {
 
-    // Vertices Square
-    Vertex v[] = {
-        Vertex(-0.5f, -0.5f, 0.5f, 0, 1), // F BOTTOM LEFT - [0]
-        Vertex(-0.5f, 0.5f, 0.5f, 0, 0),  // F TOP LEFT - [1]
-        Vertex(0.5f, 0.5f, 0.5f, 1, 0),   // F TOP RIGHT - [2]
-        Vertex(0.5f, -0.5f, 0.5f, 1, 1),  // F BOTTOM RIGHT [3]
-        Vertex(-0.5f, -0.5f, -0.5f, 0, 1), // B BOTTOM LEFT - [4]
-        Vertex(-0.5f, 0.5f, -0.5f, 0, 0),  // B TOP LEFT - [5]
-        Vertex(0.5f, 0.5f, -0.5f, 1, 0),   // B TOP RIGHT - [6]
-        Vertex(0.5f, -0.5f, -0.5f, 1, 1),  // B BOTTOM RIGHT [7]
-    };
-
-    // Load Vertex Buffer
-    HRESULT hr =
-        this->vertexBuffer.Initialize(this->cptrDevice.Get(), v, ARRAYSIZE(v));
-    COM_ERROR_IF_FAILED(hr, L"FAILED TO CREATE BUFFER");
-
-    // Load Index Data
-    DWORD indices[] = {
-        0, 1, 2, // FRONT
-        0, 2, 3, 
-        4, 5, 1, // LEFT 
-        4, 1, 0, 
-        3, 2, 6, // RIGHT
-        3, 6, 7,
-        1, 5, 6, // TOP
-        1, 6, 2, 
-        0, 4, 7, // BOTTOM
-        0, 7, 3, 
-        4, 5, 6, // BACK
-        4, 6, 7,
-    };
-
-    hr = this->indexBuffer.Initialize(this->cptrDevice.Get(), indices,
-                                      ARRAYSIZE(indices));
-    COM_ERROR_IF_FAILED(hr, L"FAILED TO INDICES BUFFER");
-
     // Load Texture
-    hr = CreateWICTextureFromFile(this->cptrDevice.Get(),
-                                  L"Data/Textures/Stone1.png", nullptr,
-                                  this->cptrPinkTexture.GetAddressOf());
+    HRESULT hr = CreateWICTextureFromFile(this->cptrDevice.Get(),
+                                          L"Data/Textures/Stone1.png", nullptr,
+                                          this->cptrPinkTexture.GetAddressOf());
     COM_ERROR_IF_FAILED(hr, L"FAILED TO CREATE WIC Texture");
 
     // Initialize Constant Buffer
@@ -389,7 +335,12 @@ bool Graphics::InitializeScene() {
     hr = this->cb_ps_pixelshaderBuffer.Initialize(this->cptrDevice.Get());
     COM_ERROR_IF_FAILED(hr, L"FAILED TO CREATE CONSTANT BUFFER");
 
-    camera.SetPosition(0.0f, 0.0f, -2.0f);
+    if (!model.Initialize(cptrDevice.Get(), cptrDeviceContext.Get(),
+                          cptrPinkTexture.Get(), cb_vs_vertexshaderBuffer)) {
+        return false;
+    }
+    model.transform.SetPosition(0, 0, 0);
+    camera.SetPosition(0.0f, 0.0f, -1.0f);
     float aspectRadio =
         static_cast<float>(windowWidth) / static_cast<float>(windowHeight);
     camera.SetProjectionValues(90.0f, aspectRadio, 0.1f, 1000.0f);

@@ -150,6 +150,8 @@
     <ClCompile Include="Engine\EngineCore.cpp" />
     <ClCompile Include="Engine\Graphics\Adapter\GraphicAdapterReader.cpp" />
     <ClCompile Include="Engine\Graphics\Camera\Camera.cpp" />
+    <ClCompile Include="Engine\Graphics\Model\Model.cpp" />
+    <ClCompile Include="Engine\Graphics\Transform\Transform.cpp" />
     <ClCompile Include="Engine\ImGUI\imgui.cpp" />
     <ClCompile Include="Engine\ImGUI\imgui_draw.cpp" />
     <ClCompile Include="Engine\ImGUI\imgui_impl_dx11.cpp" />
@@ -174,6 +176,8 @@
     <ClInclude Include="Engine\EngineCore.h" />
     <ClInclude Include="Engine\Exception\COMException.h" />
     <ClInclude Include="Engine\Graphics\Camera\Camera.h" />
+    <ClInclude Include="Engine\Graphics\Model\Model.h" />
+    <ClInclude Include="Engine\Graphics\Transform\Transform.h" />
     <ClInclude Include="Engine\Graphics\ShaderBuffer\ConstantBuffer.h" />
     <ClInclude Include="Engine\Graphics\Shader\ConstantBufferTypes.h" />
     <ClInclude Include="Engine\Graphics\Adapter\GraphicAdapterReader.h" />

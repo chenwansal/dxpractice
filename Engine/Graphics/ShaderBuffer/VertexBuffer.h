@@ -2,6 +2,8 @@
 #define VertexBuffer_h__
 #include <d3d11.h>
 #include <wrl/client.h>
+#include <memory>
+
 using namespace std;
 using namespace Microsoft::WRL;
 

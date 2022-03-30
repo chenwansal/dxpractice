@@ -67,6 +67,12 @@
     <ClCompile Include="Engine\ImGUI\imgui_widgets.cpp">
       <Filter>Source\Engine\ImGUI</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\Graphics\Model\Model.cpp">
+      <Filter>Source\Engine\Graphics\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Graphics\Transform\Transform.cpp">
+      <Filter>Source\Engine\Graphics\Transform</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\EngineCore.h">
@@ -157,6 +163,12 @@
       <Filter>Header\Engine\ImGUI</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Exception\COMException.h" />
+    <ClInclude Include="Engine\Graphics\Model\Model.h">
+      <Filter>Header\Engine\Graphics\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Graphics\Transform\Transform.h">
+      <Filter>Header\Engine\Graphics\Transform</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Header">
@@ -254,6 +266,18 @@
     </Filter>
     <Filter Include="Source\Engine\ImGUI">
       <UniqueIdentifier>{c3efbf98-fd2e-4c42-8805-ef4cbf9d5cc0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Engine\Graphics\Model">
+      <UniqueIdentifier>{dd43f9f5-7249-49dd-9d34-b753db060d51}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header\Engine\Graphics\Model">
+      <UniqueIdentifier>{61447e51-d29a-4e42-a4a5-5be8344137ca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header\Engine\Graphics\Transform">
+      <UniqueIdentifier>{3ae00af0-1428-476b-bf22-18cacfaefd9f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Engine\Graphics\Transform">
+      <UniqueIdentifier>{0d427fce-a104-4627-9863-e3894fb3b387}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
