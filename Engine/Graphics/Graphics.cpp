@@ -165,8 +165,7 @@ bool Graphics::InitializeDirectX(HWND hwnd) {
         return false;
     }
 
-    DXGI_SWAP_CHAIN_DESC scd;
-    ZeroMemory(&scd, sizeof(DXGI_SWAP_CHAIN_DESC));
+    DXGI_SWAP_CHAIN_DESC scd = {0};
 
     scd.BufferDesc.Width = this->windowWidth;
     scd.BufferDesc.Height = this->windowHeight;
@@ -236,8 +235,7 @@ bool Graphics::InitializeDirectX(HWND hwnd) {
         this->cptrDepthStencilView.Get());
 
     // CREATE DEPTH STENCIL STATE
-    D3D11_DEPTH_STENCIL_DESC depthStencilDesc;
-    ZeroMemory(&depthStencilDesc, sizeof(D3D11_DEPTH_STENCIL_DESC));
+    D3D11_DEPTH_STENCIL_DESC depthStencilDesc = {0};
 
     depthStencilDesc.DepthEnable = true;
     depthStencilDesc.DepthWriteMask =
@@ -250,8 +248,7 @@ bool Graphics::InitializeDirectX(HWND hwnd) {
     COM_ERROR_IF_FAILED(hr, L"FAILED CERATE DEPTH STENCIL STATE");
 
     // CREATE VIEWPORT
-    D3D11_VIEWPORT viewport;
-    ZeroMemory(&viewport, sizeof(D3D11_VIEWPORT));
+    D3D11_VIEWPORT viewport = {0};
 
     viewport.TopLeftX = 0;
     viewport.TopLeftY = 0;
@@ -265,7 +262,7 @@ bool Graphics::InitializeDirectX(HWND hwnd) {
 
     // Create Rasterizer State
     D3D11_RASTERIZER_DESC rasterizerDesc;
-    ZeroMemory(&rasterizerDesc, sizeof(D3D11_RASTERIZER_DESC));
+    ZeroMemory(&rasterizerDesc, sizeof(rasterizerDesc));
     rasterizerDesc.FillMode = D3D11_FILL_MODE::D3D11_FILL_SOLID;
     rasterizerDesc.CullMode = D3D11_CULL_MODE::D3D11_CULL_NONE;
     hr = this->cptrDevice->CreateRasterizerState(
@@ -273,11 +270,9 @@ bool Graphics::InitializeDirectX(HWND hwnd) {
     COM_ERROR_IF_FAILED(hr, L"FAILED TO CREATE RASTERIZER STATE");
 
     // Create Blend State
-    D3D11_BLEND_DESC blendDesc;
-    ZeroMemory(&blendDesc, sizeof(blendDesc));
+    D3D11_BLEND_DESC blendDesc = {0};
 
-    D3D11_RENDER_TARGET_BLEND_DESC rtbd;
-    ZeroMemory(&rtbd, sizeof(rtbd));
+    D3D11_RENDER_TARGET_BLEND_DESC rtbd = {0};
 
     rtbd.BlendEnable = true;
     rtbd.SrcBlend = D3D11_BLEND::D3D11_BLEND_SRC_ALPHA;

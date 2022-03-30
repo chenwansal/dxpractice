@@ -46,16 +46,14 @@ template <class T> class VertexBuffer {
             this->stride = make_unique<UINT>(sizeof(T));
         }
 
-        D3D11_BUFFER_DESC vertexBufferDesc;
-        ZeroMemory(&vertexBufferDesc, sizeof(D3D11_BUFFER_DESC));
+        D3D11_BUFFER_DESC vertexBufferDesc = {0};
         vertexBufferDesc.Usage = D3D11_USAGE_DEFAULT;
         vertexBufferDesc.ByteWidth = sizeof(T) * numVertices;
         vertexBufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
         vertexBufferDesc.CPUAccessFlags = 0;
         vertexBufferDesc.MiscFlags = 0;
 
-        D3D11_SUBRESOURCE_DATA vertexBufferData;
-        ZeroMemory(&vertexBufferData, sizeof(D3D11_SUBRESOURCE_DATA));
+        D3D11_SUBRESOURCE_DATA vertexBufferData = {0};
         vertexBufferData.pSysMem = data;
 
         HRESULT hr = device->CreateBuffer(&vertexBufferDesc, &vertexBufferData,

@@ -39,7 +39,9 @@ bool RenderWindow::Initialize(IWindowContainer *ptrWindowContainer,
 
     this->handle = CreateWindowEx(
         0, this->window_class_wide.c_str(), this->window_title_wide.c_str(),
-        WS_CAPTION | WS_MINIMIZEBOX | WS_SYSMENU, wr.left, wr.top, wr.right - wr.left, wr.bottom - wr.top, NULL, NULL, this->hInstance, ptrWindowContainer);
+        WS_CAPTION | WS_MINIMIZEBOX | WS_SYSMENU, wr.left, wr.top,
+        wr.right - wr.left, wr.bottom - wr.top, NULL, NULL, this->hInstance,
+        ptrWindowContainer);
 
     if (this->handle == NULL) {
         PLogger::PopupErrorWithResult(
@@ -56,8 +58,7 @@ bool RenderWindow::Initialize(IWindowContainer *ptrWindowContainer,
 
 bool RenderWindow::ProcessMessages() {
 
-    MSG msg;
-    ZeroMemory(&msg, sizeof(MSG));
+    MSG msg = {0};
 
     while (PeekMessage(&msg, this->handle, 0, 0, PM_REMOVE)) {
         TranslateMessage(&msg);
