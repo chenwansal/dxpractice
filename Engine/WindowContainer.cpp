@@ -70,8 +70,8 @@ void WindowContainer::Update() {
             if (me.GetType() == MouseEvent::EventType::RAW_MOVE) {
                 MousePoint delta = me.GetPos();
                 this->gfx.camera.AdjustRotation(
-                    -(float)delta.y * CAMERA_ROT_SPEED * dt,
-                    -(float)delta.x * CAMERA_ROT_SPEED * dt, 0);
+                    (float)delta.y * CAMERA_ROT_SPEED * dt,
+                    (float)delta.x * CAMERA_ROT_SPEED * dt, 0);
             }
         }
         if (me.GetType() == MouseEvent::EventType::WheelScrollUp) {
@@ -86,16 +86,18 @@ void WindowContainer::Update() {
     }
 
     if (keyboard.IsKeyPressed('W')) {
-        gfx.camera.AdjustPosition(0, -CAMERA_MOVE_SPPED * dt, 0);
-    }
-    if (keyboard.IsKeyPressed('S')) {
         gfx.camera.AdjustPosition(0, CAMERA_MOVE_SPPED * dt, 0);
     }
+    if (keyboard.IsKeyPressed('S')) {
+        gfx.camera.AdjustPosition(0, -CAMERA_MOVE_SPPED * dt, 0);
+    }
     if (keyboard.IsKeyPressed('A')) {
-        gfx.camera.AdjustPosition(CAMERA_MOVE_SPPED * dt, 0, 0);
+        gfx.camera.AdjustPosition(gfx.camera.GetLeftVector() *
+                                  CAMERA_MOVE_SPPED * dt);
     }
     if (keyboard.IsKeyPressed('D')) {
-        gfx.camera.AdjustPosition(-CAMERA_MOVE_SPPED * dt, 0, 0);
+        gfx.camera.AdjustPosition(gfx.camera.GetRightVector() *
+                                  CAMERA_MOVE_SPPED * dt);
     }
 }
 

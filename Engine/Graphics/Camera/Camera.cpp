@@ -39,6 +39,10 @@ const XMFLOAT3 &Camera::GetRotationFloat3() const {
     return this->rot;
 }
 
+const XMVECTOR &Camera::GetUpVector() {
+    return this->vec_up;
+}
+
 const XMVECTOR &Camera::GetForwardVector() {
     return this->vec_forward;
 }

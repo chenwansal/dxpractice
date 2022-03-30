@@ -53,7 +53,7 @@ class Graphics {
     unique_ptr<SpriteFont> uptrSpriteFont;
 
     ComPtr<ID3D11SamplerState> cptrSamplerState;
-    ComPtr<ID3D11ShaderResourceView> cptrMyTexture;
+    ComPtr<ID3D11ShaderResourceView> cptrPinkTexture;
 
     Timer fpsTimer;
 

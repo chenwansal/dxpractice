@@ -17,6 +17,7 @@ class Camera {
     const XMFLOAT3 &GetPositionFloat3() const;
     const XMFLOAT3 &GetRotationFloat3() const;
 
+    const XMVECTOR &GetUpVector();
     const XMVECTOR &GetForwardVector();
     const XMVECTOR &GetBackwardVector();
     const XMVECTOR &GetLeftVector();
@@ -41,6 +42,7 @@ class Camera {
     XMMATRIX viewMatrix;
     XMMATRIX projectionMatrix;
 
+    XMVECTOR vec_up;
     XMVECTOR vec_forward;
     XMVECTOR vec_left;
     XMVECTOR vec_right;
