@@ -49,29 +49,38 @@
     <ClCompile Include="Engine\Timer\Timer.cpp">
       <Filter>Source\Engine\Timer</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\ImGUI\imgui.cpp">
-      <Filter>Source\Engine\ImGUI</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\ImGUI\imgui_draw.cpp">
-      <Filter>Source\Engine\ImGUI</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\ImGUI\imgui_impl_dx11.cpp">
-      <Filter>Source\Engine\ImGUI</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\ImGUI\imgui_impl_win32.cpp">
-      <Filter>Source\Engine\ImGUI</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\ImGUI\imgui_tables.cpp">
-      <Filter>Source\Engine\ImGUI</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\ImGUI\imgui_widgets.cpp">
-      <Filter>Source\Engine\ImGUI</Filter>
-    </ClCompile>
     <ClCompile Include="Engine\Graphics\Model\Model.cpp">
       <Filter>Source\Engine\Graphics\Model</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Graphics\Transform\Transform.cpp">
       <Filter>Source\Engine\Graphics\Transform</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\FBXImpot\miniz.c">
+      <Filter>ThirdParty\OpenFBX</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\FBXImpot\ofbx.cpp">
+      <Filter>ThirdParty\OpenFBX</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\ImGUI\imgui.cpp">
+      <Filter>ThirdParty\ImGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\ImGUI\imgui_draw.cpp">
+      <Filter>ThirdParty\ImGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\ImGUI\imgui_impl_dx11.cpp">
+      <Filter>ThirdParty\ImGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\ImGUI\imgui_impl_win32.cpp">
+      <Filter>ThirdParty\ImGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\ImGUI\imgui_tables.cpp">
+      <Filter>ThirdParty\ImGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\ImGUI\imgui_widgets.cpp">
+      <Filter>ThirdParty\ImGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\FBXImpot\ofbximporter.cpp">
+      <Filter>ThirdParty\OpenFBX</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -139,36 +148,48 @@
       <Filter>Header\Engine\Timer</Filter>
     </ClInclude>
     <ClInclude Include="Engine\ImGUI\imconfig.h">
-      <Filter>Header\Engine\ImGUI</Filter>
+      <Filter>ThirdParty\ImGUI</Filter>
     </ClInclude>
     <ClInclude Include="Engine\ImGUI\imgui.h">
-      <Filter>Header\Engine\ImGUI</Filter>
+      <Filter>ThirdParty\ImGUI</Filter>
     </ClInclude>
     <ClInclude Include="Engine\ImGUI\imgui_impl_dx11.h">
-      <Filter>Header\Engine\ImGUI</Filter>
+      <Filter>ThirdParty\ImGUI</Filter>
     </ClInclude>
     <ClInclude Include="Engine\ImGUI\imgui_impl_win32.h">
-      <Filter>Header\Engine\ImGUI</Filter>
+      <Filter>ThirdParty\ImGUI</Filter>
     </ClInclude>
     <ClInclude Include="Engine\ImGUI\imgui_internal.h">
-      <Filter>Header\Engine\ImGUI</Filter>
+      <Filter>ThirdParty\ImGUI</Filter>
     </ClInclude>
     <ClInclude Include="Engine\ImGUI\imstb_rectpack.h">
-      <Filter>Header\Engine\ImGUI</Filter>
+      <Filter>ThirdParty\ImGUI</Filter>
     </ClInclude>
     <ClInclude Include="Engine\ImGUI\imstb_textedit.h">
-      <Filter>Header\Engine\ImGUI</Filter>
+      <Filter>ThirdParty\ImGUI</Filter>
     </ClInclude>
     <ClInclude Include="Engine\ImGUI\imstb_truetype.h">
-      <Filter>Header\Engine\ImGUI</Filter>
+      <Filter>ThirdParty\ImGUI</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Exception\COMException.h" />
     <ClInclude Include="Engine\Graphics\Model\Model.h">
       <Filter>Header\Engine\Graphics\Model</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Graphics\Transform\Transform.h">
       <Filter>Header\Engine\Graphics\Transform</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\Exception\COMException.h">
+      <Filter>Header\Engine\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\FBXImpot\ofbx.h">
+      <Filter>ThirdParty\OpenFBX</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\FBXImpot\miniz.h">
+      <Filter>ThirdParty\OpenFBX</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\FBXImpot\ofbximporter.h">
+      <Filter>ThirdParty\OpenFBX</Filter>
+    </ClInclude>
+    <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Header">
@@ -219,9 +240,6 @@
     <Filter Include="Header\Engine\Graphics">
       <UniqueIdentifier>{68a7ea15-37ae-41bd-9305-9c49268c1f83}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Shaders">
-      <UniqueIdentifier>{294bca40-35c3-457a-9be7-85667b75b63c}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header\Generic">
       <UniqueIdentifier>{6fa40496-7214-4f5d-af61-1712b620c66e}</UniqueIdentifier>
     </Filter>
@@ -261,12 +279,6 @@
     <Filter Include="Source\Engine\Timer">
       <UniqueIdentifier>{16c5a756-7d33-4092-96ad-e9afde88d75b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header\Engine\ImGUI">
-      <UniqueIdentifier>{ab36613e-53c6-4401-bdfd-7ef50aa09c72}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Engine\ImGUI">
-      <UniqueIdentifier>{c3efbf98-fd2e-4c42-8805-ef4cbf9d5cc0}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\Engine\Graphics\Model">
       <UniqueIdentifier>{dd43f9f5-7249-49dd-9d34-b753db060d51}</UniqueIdentifier>
     </Filter>
@@ -279,16 +291,45 @@
     <Filter Include="Source\Engine\Graphics\Transform">
       <UniqueIdentifier>{0d427fce-a104-4627-9863-e3894fb3b387}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Data">
+      <UniqueIdentifier>{7d526585-7a0f-4388-b80a-05a4279ef7fd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Data\Shaders">
+      <UniqueIdentifier>{294bca40-35c3-457a-9be7-85667b75b63c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Data\Model">
+      <UniqueIdentifier>{4362d6b5-d0eb-45c3-b9d9-3432e120f8d0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ThirdParty">
+      <UniqueIdentifier>{b1ead258-f342-4bb5-ab8b-f89c52bfbcb7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ThirdParty\OpenFBX">
+      <UniqueIdentifier>{8b575313-d2f8-4762-8fbd-c1ebcd0b456f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ThirdParty\ImGUI">
+      <UniqueIdentifier>{ab36613e-53c6-4401-bdfd-7ef50aa09c72}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="依赖关系.txt" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Data\Shaders\vertexshader.hlsl">
-      <Filter>Source\Shaders</Filter>
+      <Filter>Data\Shaders</Filter>
     </FxCompile>
     <FxCompile Include="Data\Shaders\pixelshader.hlsl">
-      <Filter>Source\Shaders</Filter>
+      <Filter>Data\Shaders</Filter>
     </FxCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\OpenFBX\runtime\a.FBX">
+      <Filter>Data\Model</Filter>
+    </None>
+    <None Include="Data\Model\YM_WS_Weapon01_1.FBX">
+      <Filter>Data\Model</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="dxengine.rc" />
   </ItemGroup>
 </Project>

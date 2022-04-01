@@ -3,18 +3,17 @@
 #include "../ShaderBuffer/ConstantBuffer.h"
 #include "../ShaderBuffer/IndexBuffer.h"
 #include "../ShaderBuffer/VertexBuffer.h"
-#include "../Vertex/Vertex.h"
 #include "../Transform/Transform.h"
-
+#include "../Vertex/Vertex.h"
+using namespace std;
 using namespace DirectX;
 
 class Model {
 
   public:
-
     Transform transform;
 
-    bool Initialize(ID3D11Device *ptrDevice,
+    bool Initialize(const char *filePath, ID3D11Device *ptrDevice,
                     ID3D11DeviceContext *ptrDeviceContext,
                     ID3D11ShaderResourceView *ptrTexture,
                     ConstantBuffer<CB_VS_vertexshader> &cb_vs_vertexshader);

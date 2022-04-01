@@ -1,6 +1,7 @@
 #include "Model.h"
+#include "../../FBXImpot/ofbximporter.h"
 
-bool Model::Initialize(ID3D11Device *ptrDevice,
+bool Model::Initialize(const char *filePath, ID3D11Device *ptrDevice,
                        ID3D11DeviceContext *ptrDeviceContext,
                        ID3D11ShaderResourceView *ptrTexture,
                        ConstantBuffer<CB_VS_vertexshader> &cb_vs_vertexshader) {
@@ -10,41 +11,51 @@ bool Model::Initialize(ID3D11Device *ptrDevice,
     this->texture = ptrTexture;
     this->cb_vs_vertexshader = &cb_vs_vertexshader;
 
-    // Vertices Square
-    Vertex v[] = {
-        Vertex(-0.5f, -0.5f, 0.5f, 0, 1),  // F BOTTOM LEFT - [0]
-        Vertex(-0.5f, 0.5f, 0.5f, 0, 0),   // F TOP LEFT - [1]
-        Vertex(0.5f, 0.5f, 0.5f, 1, 0),    // F TOP RIGHT - [2]
-        Vertex(0.5f, -0.5f, 0.5f, 1, 1),   // F BOTTOM RIGHT [3]
-        Vertex(-0.5f, -0.5f, -0.5f, 0, 1), // B BOTTOM LEFT - [4]
-        Vertex(-0.5f, 0.5f, -0.5f, 0, 0),  // B TOP LEFT - [5]
-        Vertex(0.5f, 0.5f, -0.5f, 1, 0),   // B TOP RIGHT - [6]
-        Vertex(0.5f, -0.5f, -0.5f, 1, 1),  // B BOTTOM RIGHT [7]
-    };
+    vector<Vertex> tarVertices;
+    vector<DWORD> tarIndices;
+
+    ofbx::IScene *scene = load_fbx(filePath);
+    int meshCount = scene->getMeshCount();
+    for (int i = 0; i < meshCount; i += 1) {
+
+        const ofbx::Mesh &mesh = *scene->getMesh(i);
+        const ofbx::Geometry &geom = *mesh.getGeometry();
+
+        // VERTEX
+        int vertexCount = geom.getVertexCount();
+        const ofbx::Vec3 *vertices = geom.getVertices();
+        const ofbx::Vec2 *uvs = geom.getUVs();
+        tarVertices.reserve(vertexCount);
+        for (int j = 0; j < vertexCount; j += 1) {
+            ofbx::Vec3 v = vertices[j];
+            ofbx::Vec2 uv = uvs[j];
+            tarVertices.push_back(Vertex(XMFLOAT3(v.x, v.y, v.z), XMFLOAT2(uv.x, uv.y)));
+        }
+
+        // INDEX
+        int indexCount = geom.getIndexCount();
+        const int *indices = geom.getFaceIndices();
+        tarIndices.reserve(indexCount);
+        for (int j = 0; j < indexCount; j += 1) {
+            int index = indices[j];
+            tarIndices.push_back(index);
+        }
+
+        // UV
+
+        // NORMAL
+
+        // COLOR
+    }
 
     // Load Vertex Buffer
-    HRESULT hr =
-        this->vertexBuffer.Initialize(this->ptrDevice, v, ARRAYSIZE(v));
+    HRESULT hr = this->vertexBuffer.Initialize(
+        this->ptrDevice, tarVertices.data(), tarVertices.size());
     COM_ERROR_IF_FAILED(hr, L"FAILED TO CREATE BUFFER");
 
-    // Load Index Data
-    DWORD indices[] = {
-        0, 1, 2, // FRONT
-        0, 2, 3,
-        4, 5, 1, // LEFT
-        4, 1, 0,
-        3, 2, 6, // RIGHT
-        3, 6, 7,
-        1, 5, 6, // TOP
-        1, 6, 2,
-        0, 4, 7, // BOTTOM
-        0, 7, 3,
-        4, 5, 6, // BACK
-        4, 6, 7,
-    };
-
-    hr = this->indexBuffer.Initialize(this->ptrDevice, indices,
-                                      ARRAYSIZE(indices));
+    // Load Index Buffer
+    hr = this->indexBuffer.Initialize(this->ptrDevice, tarIndices.data(),
+                                      tarIndices.size());
     COM_ERROR_IF_FAILED(hr, L"FAILED TO INDICES BUFFER");
 
     this->UpdateWorldMatrix();
@@ -65,7 +76,9 @@ void Model::Draw(const XMMATRIX &viewProjectionMatrix) {
         0, 1, cb_vs_vertexshader->GetAddressOf());
 
     UINT offset = 0;
-    this->ptrDeviceContext->PSSetShaderResources(0, 1, &this->texture);
+    if (this->texture != nullptr) {
+        this->ptrDeviceContext->PSSetShaderResources(0, 1, &this->texture);
+    }
     this->ptrDeviceContext->IASetVertexBuffers(
         0, 1, this->vertexBuffer.GetAddressOf(), this->vertexBuffer.StridePtr(),
         &offset);

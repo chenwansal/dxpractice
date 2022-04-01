@@ -303,7 +303,8 @@ bool Graphics::InitializeShaders() {
          D3D11_INPUT_CLASSIFICATION::D3D11_INPUT_PER_VERTEX_DATA, 0},
         {"TEXCOORD", 0, DXGI_FORMAT::DXGI_FORMAT_R32G32_FLOAT, 0,
          D3D11_APPEND_ALIGNED_ELEMENT,
-         D3D11_INPUT_CLASSIFICATION::D3D11_INPUT_PER_VERTEX_DATA, 0}};
+         D3D11_INPUT_CLASSIFICATION::D3D11_INPUT_PER_VERTEX_DATA, 0}
+    };
     UINT numElements = ARRAYSIZE(layoutDesc);
 
     wstring path = PathHelper::GetEnvironmentDir();
@@ -335,12 +336,12 @@ bool Graphics::InitializeScene() {
     hr = this->cb_ps_pixelshaderBuffer.Initialize(this->cptrDevice.Get());
     COM_ERROR_IF_FAILED(hr, L"FAILED TO CREATE CONSTANT BUFFER");
 
-    if (!model.Initialize(cptrDevice.Get(), cptrDeviceContext.Get(),
+    if (!model.Initialize("Data/Model/a.FBX", cptrDevice.Get(), cptrDeviceContext.Get(),
                           cptrPinkTexture.Get(), cb_vs_vertexshaderBuffer)) {
         return false;
     }
     model.transform.SetPosition(0, 0, 0);
-    camera.SetPosition(0.0f, 0.0f, -1.0f);
+    camera.SetPosition(0.0f, 0.0f, -10.0f);
     float aspectRadio =
         static_cast<float>(windowWidth) / static_cast<float>(windowHeight);
     camera.SetProjectionValues(90.0f, aspectRadio, 0.1f, 1000.0f);

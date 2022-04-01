@@ -148,6 +148,9 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Engine\EngineCore.cpp" />
+    <ClCompile Include="Engine\FBXImpot\miniz.c" />
+    <ClCompile Include="Engine\FBXImpot\ofbx.cpp" />
+    <ClCompile Include="Engine\FBXImpot\ofbximporter.cpp" />
     <ClCompile Include="Engine\Graphics\Adapter\GraphicAdapterReader.cpp" />
     <ClCompile Include="Engine\Graphics\Camera\Camera.cpp" />
     <ClCompile Include="Engine\Graphics\Model\Model.cpp" />
@@ -175,6 +178,8 @@
   <ItemGroup>
     <ClInclude Include="Engine\EngineCore.h" />
     <ClInclude Include="Engine\Exception\COMException.h" />
+    <ClInclude Include="Engine\FBXImpot\miniz.h" />
+    <ClInclude Include="Engine\FBXImpot\ofbx.h" />
     <ClInclude Include="Engine\Graphics\Camera\Camera.h" />
     <ClInclude Include="Engine\Graphics\Model\Model.h" />
     <ClInclude Include="Engine\Graphics\Transform\Transform.h" />
@@ -205,6 +210,8 @@
     <ClInclude Include="Engine\WindowContainer.h" />
     <ClInclude Include="Engine\Graphics\Shader\Shaders.h" />
     <ClInclude Include="Generic\PathHelper.h" />
+    <ClInclude Include="Engine\FBXImpot\ofbximporter.h" />
+    <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="依赖关系.txt" />
@@ -218,6 +225,13 @@
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
     </FxCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\OpenFBX\runtime\a.FBX" />
+    <None Include="Data\Model\YM_WS_Weapon01_1.FBX" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="dxengine.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
