@@ -84,7 +84,7 @@ void Model::Draw(const XMMATRIX &viewProjectionMatrix) {
         &offset);
     this->ptrDeviceContext->IASetIndexBuffer(this->indexBuffer.Get(),
                                              DXGI_FORMAT_R32_UINT, 0);
-    this->ptrDeviceContext->DrawIndexed(this->indexBuffer.BufferSize(), 0, 0);
+    this->ptrDeviceContext->DrawIndexed(this->indexBuffer.IndexCount(), 0, 0);
 }
 
 void Model::UpdateWorldMatrix() {

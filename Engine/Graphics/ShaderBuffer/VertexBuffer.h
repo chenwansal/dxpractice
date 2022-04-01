@@ -2,7 +2,6 @@
 #define VertexBuffer_h__
 #include <d3d11.h>
 #include <wrl/client.h>
-#include <memory>
 
 using namespace std;
 using namespace Microsoft::WRL;
@@ -13,8 +12,8 @@ template <class T> class VertexBuffer {
 
   private:
     ComPtr<ID3D11Buffer> buffer;
-    unique_ptr<UINT> stride;
-    UINT bufferSize = 0;
+    UINT stride = sizeof(T);
+    UINT vertexCount = 0;
 
   public:
     VertexBuffer() {
@@ -25,32 +24,32 @@ template <class T> class VertexBuffer {
     ID3D11Buffer *const *GetAddressOf() const {
         return buffer.GetAddressOf();
     }
-    UINT BufferSize() const {
-        return bufferSize;
+    UINT VertexCount() const {
+        return vertexCount;
     }
 
     const UINT Stride() const {
-        return *this->stride.get();
+        return this->stride;
     }
 
     const UINT *StridePtr() const {
-        return this->stride.get();
+        return &this->stride;
     }
 
-    HRESULT Initialize(ID3D11Device *device, T *data, UINT numVertices) {
+    HRESULT Initialize(ID3D11Device *device, T *data, UINT vertexCount) {
 
         if (buffer != nullptr) {
             buffer.Reset();
         }
 
-        this->bufferSize = numVertices;
+        this->vertexCount = vertexCount;
         if (stride.get() == nullptr) {
             this->stride = make_unique<UINT>(sizeof(T));
         }
 
         D3D11_BUFFER_DESC vertexBufferDesc = {0};
         vertexBufferDesc.Usage = D3D11_USAGE_DEFAULT;
-        vertexBufferDesc.ByteWidth = sizeof(T) * numVertices;
+        vertexBufferDesc.ByteWidth = stride * vertexCount;
         vertexBufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
         vertexBufferDesc.CPUAccessFlags = 0;
         vertexBufferDesc.MiscFlags = 0;
