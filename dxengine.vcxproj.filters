@@ -82,6 +82,12 @@
     <ClCompile Include="Engine\FBXImpot\ofbximporter.cpp">
       <Filter>ThirdParty\OpenFBX</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\Graphics\Common\Color.cpp">
+      <Filter>Source\Engine\Graphics\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Graphics\Texture\Texture.cpp">
+      <Filter>Source\Engine\Graphics\Texture</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\EngineCore.h">
@@ -190,6 +196,12 @@
       <Filter>ThirdParty\OpenFBX</Filter>
     </ClInclude>
     <ClInclude Include="resource.h" />
+    <ClInclude Include="Engine\Graphics\Common\Color.h">
+      <Filter>Header\Engine\Graphics\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Graphics\Texture\Texture.h">
+      <Filter>Header\Engine\Graphics\Texture</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Header">
@@ -308,6 +320,18 @@
     </Filter>
     <Filter Include="ThirdParty\ImGUI">
       <UniqueIdentifier>{ab36613e-53c6-4401-bdfd-7ef50aa09c72}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header\Engine\Graphics\Common">
+      <UniqueIdentifier>{feb8d867-5585-4eda-8e01-8472b762c78d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Engine\Graphics\Common">
+      <UniqueIdentifier>{f5e3a47e-8a86-4e83-9e14-096a6b8fe559}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Engine\Graphics\Texture">
+      <UniqueIdentifier>{c6497d78-752f-4f48-a3e6-92ae47e21db7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header\Engine\Graphics\Texture">
+      <UniqueIdentifier>{bc34db01-2859-40bc-b3bf-d3769014845f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
